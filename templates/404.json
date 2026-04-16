@@ -7,14 +7,32 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
       "type": "404",
       "settings": {}
+    },
+    "countdown_VjRHyR": {
+      "type": "countdown",
+      "name": "t:sections.countdown.preset_name",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "target_date": "2026-06-01T00:00:00",
+        "eyebrow": "Coming soon",
+        "heading": "New Collection Drop",
+        "text": "",
+        "button_label": "Get notified",
+        "button_link": "",
+        "overlay_opacity": 40,
+        "text_color": "#ffffff",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "countdown_VjRHyR"
   ]
 }
