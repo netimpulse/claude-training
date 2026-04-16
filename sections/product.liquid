@@ -5,14 +5,20 @@
   • Sold-out / unavailable logic
   • Variant JS (price update, URL update)
   • Accessible labels, aria, skip-link target
-  • Empty-state placeholders
+  • Empty-state placeholders when no product is loaded
   • JSON-LD via {{ product | structured_data }} in meta-tags snippet
 {%- endcomment -%}
 
 {{ 'section-product.css' | asset_url | stylesheet_tag }}
 
-{%- assign current_variant = product.selected_or_first_available_variant -%}
-{%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+{%- liquid
+  assign has_product = false
+  if product != blank and product.title != blank
+    assign has_product = true
+    assign current_variant = product.selected_or_first_available_variant
+    assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+  endif
+-%}
 
 <section
   id="product-{{ section.id }}"
@@ -38,7 +44,7 @@
   <div class="product-section__inner page-width">
     {%- comment -%} ====== MEDIA GALLERY ====== {%- endcomment -%}
     <div class="product-section__media" data-product-media-container>
-      {%- if product.media.size > 0 -%}
+      {%- if has_product and product.media.size > 0 -%}
         {%- for media in product.media -%}
           <div
             class="product-section__media-item{% if media == featured_media %} product-section__media-item--active{% endif %}"
@@ -97,46 +103,52 @@
 
           {%- when 'title' -%}
             <div class="product-section__block" {{ block.shopify_attributes }}>
-              {%- if product.title != blank -%}
+              {%- if has_product -%}
                 <h1 class="product-section__title">{{ product.title | escape }}</h1>
               {%- else -%}
-                <h1 class="product-section__title">{{ 'products.product.title' | t | default: 'Example product' }}</h1>
+                <h1 class="product-section__title">{{ 'products.product.title' | t }}</h1>
               {%- endif -%}
-              {%- if block.settings.show_vendor and product.vendor != blank -%}
+              {%- if has_product and block.settings.show_vendor and product.vendor != blank -%}
                 <p class="product-section__vendor">{{ product.vendor | escape }}</p>
               {%- endif -%}
             </div>
 
           {%- when 'price' -%}
             <div class="product-section__block" {{ block.shopify_attributes }}>
-              {%- render 'product-price', product: product, variant: current_variant -%}
+              {%- if has_product -%}
+                {%- render 'product-price', product: product, variant: current_variant -%}
+              {%- else -%}
+                <span class="product-section__price">{{ 0 | money }}</span>
+              {%- endif -%}
             </div>
 
           {%- when 'variant_picker' -%}
             <div class="product-section__block" {{ block.shopify_attributes }}>
-              {%- unless product.has_only_default_variant -%}
-                {%- for option in product.options_with_values -%}
-                  <div class="product-section__option">
-                    <label class="product-section__option-label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
-                      {{ option.name | escape }}
-                    </label>
-                    <select
-                      id="Option-{{ section.id }}-{{ forloop.index0 }}"
-                      class="product-section__option-select"
-                      data-option-index="{{ forloop.index0 }}"
-                    >
-                      {%- for value in option.values -%}
-                        <option
-                          value="{{ value | escape }}"
-                          {% if option.selected_value == value %}selected="selected"{% endif %}
-                        >
-                          {{ value | escape }}
-                        </option>
-                      {%- endfor -%}
-                    </select>
-                  </div>
-                {%- endfor -%}
-              {%- endunless -%}
+              {%- if has_product -%}
+                {%- unless product.has_only_default_variant -%}
+                  {%- for option in product.options_with_values -%}
+                    <div class="product-section__option">
+                      <label class="product-section__option-label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                        {{ option.name | escape }}
+                      </label>
+                      <select
+                        id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                        class="product-section__option-select"
+                        data-option-index="{{ forloop.index0 }}"
+                      >
+                        {%- for value in option.values -%}
+                          <option
+                            value="{{ value | escape }}"
+                            {% if option.selected_value == value %}selected="selected"{% endif %}
+                          >
+                            {{ value | escape }}
+                          </option>
+                        {%- endfor -%}
+                      </select>
+                    </div>
+                  {%- endfor -%}
+                {%- endunless -%}
+              {%- endif -%}
             </div>
 
           {%- when 'quantity' -%}
@@ -175,31 +187,37 @@
 
           {%- when 'buy_buttons' -%}
             <div class="product-section__block" {{ block.shopify_attributes }}>
-              {%- form 'product', product, id: 'ProductForm', data-product-form: '' -%}
-                <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+              {%- if has_product -%}
+                {%- form 'product', product, id: 'ProductForm', data-product-form: '' -%}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
 
-                <button
-                  type="submit"
-                  name="add"
-                  class="product-section__add-btn btn btn--primary"
-                  {% unless current_variant.available %}disabled{% endunless %}
-                >
-                  {%- if current_variant.available -%}
-                    {{ 'products.product.add_to_cart' | t }}
-                  {%- else -%}
-                    {{ 'products.product.sold_out' | t }}
+                  <button
+                    type="submit"
+                    name="add"
+                    class="product-section__add-btn btn btn--primary"
+                    {% unless current_variant.available %}disabled{% endunless %}
+                  >
+                    {%- if current_variant.available -%}
+                      {{ 'products.product.add_to_cart' | t }}
+                    {%- else -%}
+                      {{ 'products.product.sold_out' | t }}
+                    {%- endif -%}
+                  </button>
+
+                  {%- if block.settings.show_dynamic_checkout -%}
+                    {{ form | payment_button }}
                   {%- endif -%}
+                {%- endform -%}
+              {%- else -%}
+                <button type="button" class="product-section__add-btn btn btn--primary" disabled>
+                  {{ 'products.product.add_to_cart' | t }}
                 </button>
-
-                {%- if block.settings.show_dynamic_checkout -%}
-                  {{ form | payment_button }}
-                {%- endif -%}
-              {%- endform -%}
+              {%- endif -%}
             </div>
 
           {%- when 'description' -%}
             <div class="product-section__block" {{ block.shopify_attributes }}>
-              {%- if product.description != blank -%}
+              {%- if has_product and product.description != blank -%}
                 <div class="product-section__description rte">
                   {{ product.description }}
                 </div>
@@ -208,22 +226,23 @@
 
           {%- when 'share' -%}
             <div class="product-section__block" {{ block.shopify_attributes }}>
-              <details class="product-section__share">
-                <summary class="product-section__share-btn">
-                  {%- render 'icon', name: 'arrow' -%}
-                  {{ 'products.product.share' | t }}
-                </summary>
-                <div class="product-section__share-content">
-                  <input
-                    type="text"
-                    class="product-section__share-url"
-                    value="{{ product.url | prepend: request.origin }}"
-                    readonly
-                    aria-label="{{ 'products.product.share' | t }}"
-                    onclick="this.select()"
-                  >
-                </div>
-              </details>
+              {%- if has_product -%}
+                <details class="product-section__share">
+                  <summary class="product-section__share-btn">
+                    {%- render 'icon', name: 'arrow' -%}
+                    {{ 'products.product.share' | t }}
+                  </summary>
+                  <div class="product-section__share-content">
+                    <input
+                      type="text"
+                      class="product-section__share-url"
+                      value="{{ product.url | prepend: request.origin }}"
+                      readonly
+                      aria-label="{{ 'products.product.share' | t }}"
+                    >
+                  </div>
+                </details>
+              {%- endif -%}
             </div>
 
           {%- when 'custom_text' -%}
@@ -247,10 +266,12 @@
   </div>
 </section>
 
-<script src="{{ 'product-form.js' | asset_url }}" defer></script>
-<script type="application/json" id="ProductJson-{{ section.id }}">
-  {{ product.variants | json }}
-</script>
+{%- if has_product -%}
+  <script src="{{ 'product-form.js' | asset_url }}" defer></script>
+  <script type="application/json" id="ProductJson-{{ section.id }}">
+    {{ product.variants | json }}
+  </script>
+{%- endif -%}
 
 {% schema %}
 {

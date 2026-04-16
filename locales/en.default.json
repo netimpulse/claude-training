@@ -59,7 +59,8 @@
       "share": "Share",
       "vendor": "Vendor",
       "type": "Type",
-      "sku": "SKU"
+      "sku": "SKU",
+      "title": "Product title"
     }
   },
   "404": {

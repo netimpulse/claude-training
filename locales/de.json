@@ -59,7 +59,8 @@
       "share": "Teilen",
       "vendor": "Hersteller",
       "type": "Typ",
-      "sku": "Artikelnr."
+      "sku": "Artikelnr.",
+      "title": "Produkttitel"
     }
   },
   "404": {
