@@ -1,115 +1,23 @@
 {
   "sections": {
-    "marquee": {
-      "type": "marquee",
-      "blocks": {
-        "m1": { "type": "message", "settings": { "text": "Kostenloser Versand ab 80 €" } },
-        "m2": { "type": "message", "settings": { "text": "Neuer Drop — SS26 Kollektion jetzt verfügbar" } },
-        "m3": { "type": "message", "settings": { "text": "30 Tage Rückgabe" } }
-      },
-      "block_order": ["m1", "m2", "m3"],
-      "settings": { "speed": 25, "font_size": 14 }
-    },
-    "hero": {
-      "type": "hero",
-      "blocks": {
-        "s1": { "type": "slide", "settings": { "heading": "Kollektion SS26", "subheading": "Neuer Drop", "button_label": "Jetzt shoppen", "button_link": "/collections/all" } },
-        "s2": { "type": "slide", "settings": { "heading": "Essentials", "subheading": "Zeitlos & reduziert", "button_label": "Entdecken", "button_link": "/collections/all" } }
-      },
-      "block_order": ["s1", "s2"],
-      "settings": { "mode": "slideshow", "height": "large", "autoplay": true }
-    },
-    "split_collection": {
-      "type": "split-collection",
-      "blocks": {
-        "sc1": { "type": "card", "settings": { "eyebrow": "Kollektion", "heading": "Damen", "button_text": "Entdecken" } },
-        "sc2": { "type": "card", "settings": { "eyebrow": "Kollektion", "heading": "Herren", "button_text": "Entdecken" } }
-      },
-      "block_order": ["sc1", "sc2"],
-      "settings": {}
-    },
-    "usp": {
-      "type": "usp-bar",
-      "blocks": {
-        "u1": { "type": "usp", "settings": { "heading": "Kostenloser Versand", "subtext": "Ab 80 €" } },
-        "u2": { "type": "usp", "settings": { "heading": "30 Tage Rückgabe", "subtext": "Unkompliziert" } },
-        "u3": { "type": "usp", "settings": { "heading": "Sichere Bezahlung", "subtext": "SSL-verschlüsselt" } },
-        "u4": { "type": "usp", "settings": { "heading": "Nachhaltig", "subtext": "Zertifizierte Materialien" } }
-      },
-      "block_order": ["u1", "u2", "u3", "u4"]
-    },
     "countdown": {
       "type": "countdown",
-      "settings": { "eyebrow": "Coming Soon", "heading": "Nächster Drop", "text": "Sei dabei wenn unsere neue Kollektion live geht.", "button_label": "Benachrichtigen", "button_link": "/pages/notify" }
-    },
-    "showcase": {
-      "type": "product-showcase",
-      "blocks": {
-        "a1": { "type": "accordion", "settings": { "heading": "Details & Material" } },
-        "a2": { "type": "accordion", "settings": { "heading": "Pflegehinweise" } },
-        "a3": { "type": "accordion", "settings": { "heading": "Versand & Rückgabe" } }
-      },
-      "block_order": ["a1", "a2", "a3"]
-    },
-    "featured": {
-      "type": "featured-products",
-      "settings": { "heading": "Bestseller", "limit": 8, "columns": 4 }
-    },
-    "editorial": {
-      "type": "editorial-grid",
-      "blocks": {
-        "e1": { "type": "card", "settings": { "size": "wide", "heading": "Streetwear Essentials" } },
-        "e2": { "type": "card", "settings": { "size": "normal", "heading": "Outerwear" } },
-        "e3": { "type": "card", "settings": { "size": "normal", "heading": "Accessoires" } }
-      },
-      "block_order": ["e1", "e2", "e3"],
-      "settings": { "eyebrow": "Entdecken", "heading": "Die Kollektion" }
-    },
-    "story": {
-      "type": "image-with-text",
-      "settings": { "heading": "Zeitlose Mode, sorgfältig gemacht", "eyebrow": "Unsere Geschichte" }
-    },
-    "brand_values": {
-      "type": "brand-values",
-      "blocks": {
-        "bv1": { "type": "value", "settings": { "icon": "leaf", "heading": "Nachhaltig", "text": "Zertifizierte Bio-Materialien und faire Produktion." } },
-        "bv2": { "type": "value", "settings": { "icon": "heart", "heading": "Handgefertigt", "text": "Jedes Stück mit Liebe zum Detail gefertigt." } },
-        "bv3": { "type": "value", "settings": { "icon": "truck", "heading": "Kostenloser Versand", "text": "Ab 80 € versandkostenfrei innerhalb Deutschlands." } }
-      },
-      "block_order": ["bv1", "bv2", "bv3"],
-      "settings": { "heading": "Unsere Werte", "columns": 3 }
-    },
-    "lookbook": {
-      "type": "lookbook",
-      "blocks": {
-        "ls1": { "type": "scene", "settings": { "caption": "Look 01" } },
-        "ls2": { "type": "scene", "settings": { "caption": "Look 02" } }
-      },
-      "block_order": ["ls1", "ls2"]
-    },
-    "testimonials": {
-      "type": "testimonials",
-      "blocks": {
-        "t1": { "type": "testimonial" },
-        "t2": { "type": "testimonial" },
-        "t3": { "type": "testimonial" }
-      },
-      "block_order": ["t1", "t2", "t3"]
-    },
-    "social": {
-      "type": "social-feed",
-      "blocks": {
-        "p1": { "type": "post" },
-        "p2": { "type": "post" },
-        "p3": { "type": "post" },
-        "p4": { "type": "post" },
-        "p5": { "type": "post" }
-      },
-      "block_order": ["p1", "p2", "p3", "p4", "p5"]
-    },
-    "newsletter": {
-      "type": "newsletter"
+      "settings": {
+        "color_scheme": "scheme-2",
+        "target_date": "2026-06-01T00:00:00",
+        "eyebrow": "Coming soon",
+        "heading": "New Collection Drop",
+        "text": "",
+        "button_label": "Get notified",
+        "button_link": "",
+        "overlay_opacity": 40,
+        "text_color": "#ffffff",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
     }
   },
-  "order": ["marquee", "hero", "split_collection", "usp", "countdown", "showcase", "featured", "editorial", "story", "brand_values", "lookbook", "testimonials", "social", "newsletter"]
+  "order": [
+    "countdown"
+  ]
 }
