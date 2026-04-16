@@ -1,4 +1,4 @@
-<section class="tm color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+<section class="tm full-width color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
   {%- if section.settings.heading != blank -%}<h2 class="tm__heading">{{ section.settings.heading | escape }}</h2>{%- endif -%}
   <div class="tm__grid" style="--cols: {{ section.settings.columns }};">
     {%- for block in section.blocks -%}

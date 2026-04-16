@@ -2,7 +2,7 @@
   assign coll = section.settings.collection
   assign limit = section.settings.limit
 -%}
-<section class="fp color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+<section class="fp full-width color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
   <div class="fp__head">
     {%- if section.settings.heading != blank -%}<h2 class="fp__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
     {%- if coll != blank -%}<a class="fp__view-all" href="{{ coll.url }}">Alle anzeigen →</a>{%- endif -%}

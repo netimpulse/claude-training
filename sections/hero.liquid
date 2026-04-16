@@ -2,7 +2,7 @@
   assign mode = section.settings.mode
   assign slides = section.blocks | where: 'type', 'slide'
 -%}
-<section class="hero hero--{{ mode }} hero--h-{{ section.settings.height }} color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+<section class="hero full-width hero--{{ mode }} hero--h-{{ section.settings.height }} color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
   {%- if mode == 'video' -%}
     <div class="hero__media hero__media--video">
       {%- if section.settings.video != blank -%}
