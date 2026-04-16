@@ -1,0 +1,24 @@
+{
+  "type": "header",
+  "name": "Header",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "m1": { "type": "message", "settings": { "text": "Kostenloser Versand ab 80 €" } },
+        "m2": { "type": "message", "settings": { "text": "30 Tage Rückgaberecht" } },
+        "m3": { "type": "message", "settings": { "text": "Neue Kollektion jetzt entdecken" } }
+      },
+      "block_order": ["m1", "m2", "m3"],
+      "settings": {
+        "autoplay": true,
+        "speed": 4500
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {}
+    }
+  },
+  "order": ["announcement", "header"]
+}

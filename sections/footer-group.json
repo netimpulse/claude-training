@@ -1,0 +1,35 @@
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": {
+          "type": "menu",
+          "settings": { "heading": "Shop", "menu": "footer" }
+        },
+        "help": {
+          "type": "text",
+          "settings": { "heading": "Hilfe", "text": "<p>Mo–Fr 9–17 Uhr<br>hallo@dein-shop.de</p>" }
+        },
+        "legal": {
+          "type": "text",
+          "settings": { "heading": "Rechtliches", "text": "<p>AGB, Datenschutz und Widerruf findest du unten in der Policies-Zeile – sie werden automatisch aus deinen Shopify-Richtlinien gezogen.</p>" }
+        },
+        "newsletter": {
+          "type": "newsletter",
+          "settings": { "heading": "Newsletter", "text": "10 % auf deine erste Bestellung – exklusive Drops vorab." }
+        }
+      },
+      "block_order": ["shop", "help", "legal", "newsletter"],
+      "settings": {
+        "show_policies": true,
+        "show_payments": true,
+        "show_country_selector": true,
+        "show_socials": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

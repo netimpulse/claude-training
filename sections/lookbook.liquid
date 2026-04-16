@@ -1,0 +1,337 @@
+<section class="lookbook color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+  {%- if section.settings.heading != blank -%}
+    <div class="lookbook__head">
+      <h2>{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}<p>{{ section.settings.subheading | escape }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="lookbook__grid">
+    {%- for block in section.blocks -%}
+      <div class="lookbook__scene {% if block.settings.size == 'wide' %}lookbook__scene--wide{% endif %}" {{ block.shopify_attributes }}>
+        <div class="lookbook__media">
+          {%- if block.settings.image != blank -%}
+            {%- assign lb_alt = block.settings.caption | default: 'Lookbook' | escape -%}
+            {{ block.settings.image | image_url: width: 1800 | image_tag:
+               loading: 'lazy',
+               sizes: '(min-width: 990px) 66vw, 100vw',
+               widths: '600,900,1200,1500,1800',
+               alt: lb_alt,
+               class: 'lookbook__image' }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'lookbook__placeholder' }}
+          {%- endif -%}
+
+          {%- for i in (1..5) -%}
+            {%- liquid
+              assign x_key = 'hotspot_' | append: i | append: '_x'
+              assign y_key = 'hotspot_' | append: i | append: '_y'
+              assign prod_key = 'hotspot_' | append: i | append: '_product'
+              assign x = block.settings[x_key]
+              assign y = block.settings[y_key]
+              assign prod = block.settings[prod_key]
+            -%}
+            {%- if prod != blank -%}
+              <a class="lookbook__hotspot"
+                 style="left: {{ x }}%; top: {{ y }}%;"
+                 href="{{ prod.url }}"
+                 aria-label="{{ prod.title | escape }}">
+                <span class="lookbook__hotspot-dot"></span>
+                <span class="lookbook__hotspot-card">
+                  {%- if prod.featured_image != blank -%}
+                    {%- assign hotspot_alt = prod.title | escape -%}
+                    {{ prod.featured_image | image_url: width: 200 | image_tag:
+                       loading: 'lazy', sizes: '80px', widths: '80,120,160',
+                       alt: hotspot_alt, class: 'lookbook__hotspot-img' }}
+                  {%- endif -%}
+                  <span class="lookbook__hotspot-info">
+                    <strong>{{ prod.title | escape }}</strong>
+                    <span>{{ prod.price | money }}</span>
+                  </span>
+                </span>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if block.settings.caption != blank -%}
+          <figcaption class="lookbook__caption">{{ block.settings.caption | escape }}</figcaption>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{% style %}
+  {%- assign scheme = section.settings.color_scheme -%}
+  {%- if scheme -%}
+  .color-{{ scheme.id }} {
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+    --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+    --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+    --color-shadow: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    {%- if scheme.settings.background_gradient != blank -%}
+    background: {{ scheme.settings.background_gradient }};
+    {%- endif -%}
+  }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} {
+    --lb-bg: {{ section.settings.bg_color }};
+    --lb-fg: {{ section.settings.text_color }};
+    --lb-padding-top: {{ section.settings.padding_top }}px;
+    --lb-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{% endstyle %}
+{{ 'section-lookbook.css' | asset_url | stylesheet_tag }}
+{% schema %}
+{
+  "name": "t:sections.lookbook.name_lookbook",
+  "tag": "section",
+  "class": "section-lookbook",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.lookbook.label_farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.lookbook.label_ueberschrift",
+      "default": "t:sections.lookbook.default_lookbook"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.lookbook.label_untertitel",
+      "default": "t:sections.lookbook.default_shop_the_look"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.lookbook.label_hintergrund",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.lookbook.label_text",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.lookbook.label_abstand_oben",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.lookbook.label_abstand_unten",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "scene",
+      "name": "t:sections.lookbook_blocks.name_lookbook_szene",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.lookbook.label_bild"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "t:sections.lookbook.label_caption_optional"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "t:sections.lookbook.label_groesse",
+          "default": "normal",
+          "options": [
+            {
+              "value": "normal",
+              "label": "t:sections.lookbook.option_normal"
+            },
+            {
+              "value": "wide",
+              "label": "t:sections.lookbook.option_breit_2_spalten"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "t:sections.lookbook.content_hotspots_max_5"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.lookbook.content_produkt_auswaehlen_x_y_in_prozent_setzen"
+        },
+        {
+          "type": "product",
+          "id": "hotspot_1_product",
+          "label": "t:sections.lookbook.label_hotspot_1_produkt"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_1_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_1_x",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "hotspot_1_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_1_y",
+          "default": 40
+        },
+        {
+          "type": "product",
+          "id": "hotspot_2_product",
+          "label": "t:sections.lookbook.label_hotspot_2_produkt"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_2_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_2_x",
+          "default": 60
+        },
+        {
+          "type": "range",
+          "id": "hotspot_2_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_2_y",
+          "default": 60
+        },
+        {
+          "type": "product",
+          "id": "hotspot_3_product",
+          "label": "t:sections.lookbook.label_hotspot_3_produkt"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_3_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_3_x",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_3_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_3_y",
+          "default": 50
+        },
+        {
+          "type": "product",
+          "id": "hotspot_4_product",
+          "label": "t:sections.lookbook.label_hotspot_4_produkt"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_4_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_4_x",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_4_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_4_y",
+          "default": 50
+        },
+        {
+          "type": "product",
+          "id": "hotspot_5_product",
+          "label": "t:sections.lookbook.label_hotspot_5_produkt"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_5_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_5_x",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_5_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "t:sections.lookbook.label_hotspot_5_y",
+          "default": 50
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.lookbook.preset_lookbook",
+      "blocks": [
+        {
+          "type": "scene"
+        },
+        {
+          "type": "scene"
+        }
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+{
+  "general": {
+    "skip_to_content": "Zum Inhalt springen",
+    "cart": {
+      "title": "Warenkorb",
+      "item_count": {
+        "one": "{{ count }} Artikel",
+        "other": "{{ count }} Artikel"
+      }
+    },
+    "search": {
+      "placeholder": "Wonach suchst du?",
+      "submit": "Suchen",
+      "close": "Suche schließen"
+    },
+    "navigation": {
+      "menu_open": "Menü öffnen",
+      "menu_close": "Menü schließen",
+      "categories": "Kategorien",
+      "all_link": "Alle {{ title }}",
+      "empty_drawer": "Lege im Theme-Editor ein Menü für den Drawer an."
+    },
+    "social": {
+      "follow_on": "Folge uns auf {{ platform }}"
+    },
+    "accessibility": {
+      "account": "Konto",
+      "cart_icon": "Warenkorb",
+      "search_icon": "Suche",
+      "close": "Schließen",
+      "items_in_cart": "Artikel im Warenkorb:"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "In den Warenkorb",
+      "sold_out": "Ausverkauft",
+      "unavailable": "Nicht verfügbar",
+      "price": {
+        "regular_price": "Normaler Preis",
+        "sale_price": "Sonderpreis",
+        "from": "Ab {{ price }}",
+        "unit_price": "Stückpreis"
+      },
+      "quantity": {
+        "label": "Menge",
+        "decrease": "Menge verringern für {{ title }}",
+        "increase": "Menge erhöhen für {{ title }}"
+      },
+      "variant": {
+        "label": "Variante"
+      },
+      "media": {
+        "open_media": "Medium {{ index }} in Galerieansicht öffnen",
+        "play_video": "Video abspielen",
+        "load_model": "3D-Modell laden"
+      },
+      "description": "Beschreibung",
+      "share": "Teilen",
+      "vendor": "Hersteller",
+      "type": "Typ",
+      "sku": "Artikelnummer"
+    }
+  },
+  "404": {
+    "title": "404",
+    "not_found": "Seite nicht gefunden.",
+    "back_to_shopping": "Zurück zum Shop"
+  },
+  "blog": {
+    "article_comments": "Kommentare",
+    "article_metadata_html": "{{ date }} von {{ author }}",
+    "comment_form_body": "Kommentar",
+    "comment_form_email": "E-Mail",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Senden",
+    "comment_form_title": "Kommentar hinzufügen"
+  },
+  "cart": {
+    "checkout": "Zur Kasse",
+    "title": "Warenkorb",
+    "update": "Aktualisieren",
+    "remove": "Entfernen",
+    "empty": "Dein Warenkorb ist leer"
+  },
+  "customers": {
+    "login": {
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "title": "Anmeldung"
+    }
+  },
+  "collections": {
+    "title": "Kollektionen"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Zu Apple Wallet hinzufügen",
+    "card": "Geschenkkarte",
+    "expired": "Diese Geschenkkarte ist abgelaufen",
+    "expires_on": "Gültig bis {{ expires_on }}",
+    "use_at_checkout": "Diese Geschenkkarte an der Kasse einlösen"
+  },
+  "password": {
+    "title": "Dieser Shop ist privat",
+    "password": "Passwort",
+    "enter": "Eintreten"
+  },
+  "search": {
+    "title": "Suche",
+    "placeholder": "Artikel, Seiten oder Produkte suchen",
+    "submit": "Suchen",
+    "no_results_html": "Keine Ergebnisse für {{ terms }}",
+    "results_for_html": "{{ count }} Ergebnisse für {{ terms }}"
+  },
+  "newsletter": {
+    "email_label": "E-Mail",
+    "subscribe": "Abonnieren",
+    "success": "Vielen Dank für dein Abonnement!"
+  }
+}

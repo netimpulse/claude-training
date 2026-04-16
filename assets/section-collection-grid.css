@@ -1,0 +1,13 @@
+.section-collection-grid { background: var(--cg-bg, #fff); color: var(--cg-fg, #111); padding: var(--cg-padding-top,56px) clamp(1rem,3vw,2rem) var(--cg-padding-bottom,56px); }
+.coll-grid__head { max-width: 1440px; margin: 0 auto 2rem; text-align: center; }
+.coll-grid__title { font-size: clamp(1.5rem, 3vw, 2.5rem); margin: 0 0 .5rem; letter-spacing: -.01em; }
+.coll-grid__sub { margin: 0; color: rgba(0,0,0,.7); }
+.coll-grid__items { max-width: 1440px; margin: 0 auto; display: grid; gap: 1rem; grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 820px) { .coll-grid__items { grid-template-columns: repeat(var(--cols, 3), 1fr); } }
+.coll-grid__card { position: relative; color: inherit; text-decoration: none; overflow: hidden; display: block; }
+.coll-grid__media { aspect-ratio: 3/4; overflow: hidden; background: #f3f1ed; }
+.coll-grid__image { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+.coll-grid__card:hover .coll-grid__image { transform: scale(1.04); }
+.coll-grid__caption { padding: .75rem 0; text-align: center; }
+.coll-grid__caption h3 { font-size: 1rem; margin: 0; letter-spacing: .02em; text-transform: uppercase; }
+.coll-grid__caption span { font-size: .85rem; opacity: .7; }

@@ -1,0 +1,32 @@
+{%- comment -%}
+  Rendert den Preis eines Produkts inkl. Vergleichs-/Sale-Preis.
+
+  Akzeptiert:
+  - product: {Object} Produkt-Objekt (required)
+  - variant: {Object} Variante (optional, default: selected_or_first_available_variant)
+  - show_unit_price: {Boolean} Unit-Preis zusätzlich anzeigen (optional, default: true)
+{%- endcomment -%}
+{%- liquid
+  assign p_variant = variant | default: product.selected_or_first_available_variant
+  assign show_unit = show_unit_price
+  if show_unit == nil
+    assign show_unit = true
+  endif
+  assign on_sale = false
+  if p_variant.compare_at_price > p_variant.price
+    assign on_sale = true
+  endif
+-%}
+<div class="price {% if on_sale %}price--on-sale{% endif %} {% unless p_variant.available %}price--sold-out{% endunless %}">
+  {%- if on_sale -%}
+    <span class="price__sale">{{ p_variant.price | money }}</span>
+    <s class="price__compare">{{ p_variant.compare_at_price | money }}</s>
+  {%- else -%}
+    <span class="price__regular">{{ p_variant.price | money }}</span>
+  {%- endif -%}
+  {%- if show_unit and p_variant.unit_price_measurement -%}
+    <span class="price__unit">
+      {{ p_variant.unit_price | money }}/{{ p_variant.unit_price_measurement.reference_unit }}
+    </span>
+  {%- endif -%}
+</div>

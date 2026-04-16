@@ -1,0 +1,11 @@
+.section-testimonials { background: var(--tm-bg, #f6f5f2); color: var(--tm-fg, #111); padding: var(--tm-padding-top,64px) clamp(1rem,3vw,2rem) var(--tm-padding-bottom,64px); }
+.tm__heading { text-align: center; margin: 0 auto 2rem; font-size: clamp(1.5rem, 3vw, 2.25rem); max-width: 1440px; }
+.tm__grid { max-width: 1440px; margin: 0 auto; display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 820px) { .tm__grid { grid-template-columns: repeat(var(--cols, 3), 1fr); } }
+.tm__card { background: #fff; padding: 1.5rem; margin: 0; display: flex; flex-direction: column; gap: .75rem; }
+.tm__stars { font-size: 1rem; letter-spacing: .2em; color: #c9a227; }
+.tm__quote { font-size: 1rem; line-height: 1.5; margin: 0; font-style: italic; }
+.tm__quote p { margin: 0; }
+.tm__author { font-size: .85rem; }
+.tm__author strong { display: block; }
+.tm__author span { opacity: .6; }

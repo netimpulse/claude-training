@@ -1,0 +1,47 @@
+{%- doc -%}
+  Renders a responsive image with lazy-loading, sizes, and alt fallback.
+  Wrapped in a link if `url` is provided.
+
+  @param {image} image - The image to be rendered (required — renders nothing if blank)
+  @param {string} [url] - An optional destination URL
+  @param {string} [class] - Optional CSS class on the wrapper
+  @param {number} [width] - Max resolution width (default: image.width)
+  @param {number} [height] - Fixed height (enables crop)
+  @param {string} [crop] - Crop position (center, top, etc.)
+  @param {string} [sizes] - HTML sizes attribute (default: 100vw)
+  @param {string} [widths] - Comma-separated widths (default: responsive set)
+  @param {string} [alt] - Alt text override (falls back to image.alt, then empty string)
+  @param {string} [loading] - 'lazy' (default) or 'eager'
+  @param {string} [fetchpriority] - 'high', 'low', or 'auto'
+{%- enddoc -%}
+
+{%- if image != blank -%}
+  {%- liquid
+    unless height
+      assign width = width | default: image.width
+    endunless
+    assign img_alt = alt | default: image.alt | default: '' | escape
+    assign img_loading = loading | default: 'lazy'
+    assign img_sizes = sizes | default: '100vw'
+    assign img_widths = widths | default: '375,550,750,1000,1250,1500'
+
+    if url
+      assign wrapper = 'a'
+    else
+      assign wrapper = 'div'
+    endif
+  -%}
+
+  <{{ wrapper }}
+    class="image {{ class }}"
+    {% if url %}href="{{ url }}"{% endif %}
+  >
+    {{ image | image_url: width: width, height: height, crop: crop | image_tag:
+      loading: img_loading,
+      sizes: img_sizes,
+      widths: img_widths,
+      alt: img_alt,
+      class: 'image__img'
+    }}
+  </{{ wrapper }}>
+{%- endif -%}

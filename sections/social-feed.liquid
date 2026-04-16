@@ -1,0 +1,166 @@
+<section class="sf color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+  <div class="sf__head">
+    <h2>{{ section.settings.heading | default: '@brand.name' | escape }}</h2>
+    {%- if section.settings.link != blank -%}
+      <a href="{{ section.settings.link }}" target="_blank" rel="noopener">Folgen →</a>
+    {%- endif -%}
+  </div>
+  <div class="sf__grid" style="--cols: {{ section.settings.columns }};">
+    {%- for block in section.blocks -%}
+      <a href="{{ block.settings.link | default: '#' }}" target="_blank" rel="noopener" class="sf__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          {{ block.settings.image | image_url: width: 600 | image_tag:
+             loading: 'lazy',
+             sizes: '(min-width: 990px) 20vw, 33vw',
+             widths: '300,450,600',
+             alt: 'Social Post', class: 'sf__image' }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag }}
+        {%- endif -%}
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+{% style %}
+  {%- assign scheme = section.settings.color_scheme -%}
+  {%- if scheme -%}
+  .color-{{ scheme.id }} {
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+    --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+    --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+    --color-shadow: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    {%- if scheme.settings.background_gradient != blank -%}
+    background: {{ scheme.settings.background_gradient }};
+    {%- endif -%}
+  }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} {
+    --sf-bg: {{ section.settings.bg_color }};
+    --sf-fg: {{ section.settings.text_color }};
+    --sf-padding-top: {{ section.settings.padding_top }}px;
+    --sf-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{% endstyle %}
+{{ 'section-social-feed.css' | asset_url | stylesheet_tag }}
+{% schema %}
+{
+  "name": "t:sections.social_feed.name_social_feed",
+  "tag": "section",
+  "class": "section-social-feed",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.social_feed.label_farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.social_feed.label_ueberschrift",
+      "default": "t:sections.social_feed.default_folge_uns"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "t:sections.social_feed.label_profil_link"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "t:sections.social_feed.label_spalten_desktop",
+      "default": 5
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.social_feed.label_hintergrund",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.social_feed.label_text",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.social_feed.label_abstand_oben",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.social_feed.label_abstand_unten",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "post",
+      "name": "t:sections.social_feed_blocks.name_post",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.social_feed.label_bild"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.social_feed.label_link_zum_post"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.social_feed.preset_social_feed",
+      "blocks": [
+        {
+          "type": "post"
+        },
+        {
+          "type": "post"
+        },
+        {
+          "type": "post"
+        },
+        {
+          "type": "post"
+        },
+        {
+          "type": "post"
+        }
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

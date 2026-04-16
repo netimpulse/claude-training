@@ -1,0 +1,162 @@
+<section class="iwt iwt--img-{{ section.settings.image_side }} color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+  <div class="iwt__grid">
+    <div class="iwt__media">
+      {%- if section.settings.image != blank -%}
+        {%- assign iwt_alt = section.settings.heading | default: '' | escape -%}
+        {{ section.settings.image | image_url: width: 1400 | image_tag:
+           loading: 'lazy',
+           sizes: '(min-width: 990px) 50vw, 100vw',
+           widths: '450,600,900,1200,1400',
+           alt: iwt_alt,
+           class: 'iwt__image' }}
+      {%- else -%}
+        <div class="iwt__placeholder">{{ 'lifestyle-2' | placeholder_svg_tag }}</div>
+      {%- endif -%}
+    </div>
+    <div class="iwt__content">
+      {%- if section.settings.eyebrow != blank -%}<p class="iwt__eyebrow">{{ section.settings.eyebrow | escape }}</p>{%- endif -%}
+      {%- if section.settings.heading != blank -%}<h2 class="iwt__heading">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+      {%- if section.settings.text != blank -%}<div class="iwt__text">{{ section.settings.text }}</div>{%- endif -%}
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <a class="iwt__btn" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% style %}
+  {%- assign scheme = section.settings.color_scheme -%}
+  {%- if scheme -%}
+  .color-{{ scheme.id }} {
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+    --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+    --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+    --color-shadow: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    {%- if scheme.settings.background_gradient != blank -%}
+    background: {{ scheme.settings.background_gradient }};
+    {%- endif -%}
+  }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} {
+    --iwt-bg: {{ section.settings.bg_color }};
+    --iwt-fg: {{ section.settings.text_color }};
+    --iwt-padding-top: {{ section.settings.padding_top }}px;
+    --iwt-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{% endstyle %}
+{{ 'section-image-with-text.css' | asset_url | stylesheet_tag }}
+{% schema %}
+{
+  "name": "t:sections.image_with_text.name_bild_mit_text",
+  "tag": "section",
+  "class": "section-image-with-text",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.image_with_text.label_farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.image_with_text.label_bild"
+    },
+    {
+      "type": "select",
+      "id": "image_side",
+      "label": "t:sections.image_with_text.label_bild_seite",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.image_with_text.option_links"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.image_with_text.option_rechts"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:sections.image_with_text.label_eyebrow",
+      "default": "t:sections.image_with_text.default_unsere_geschichte"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.image_with_text.label_ueberschrift",
+      "default": "t:sections.image_with_text.default_zeitlose_mode_sorgfaeltig_gemacht"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.image_with_text.label_text",
+      "default": "t:sections.image_with_text.default_p_wir_designen_in_berlin_und_produzieren"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.image_with_text.label_button_text",
+      "default": "t:sections.image_with_text.default_mehr_erfahren"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.image_with_text.label_button_link"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.image_with_text.label_hintergrund",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.image_with_text.label_text",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.image_with_text.label_abstand_oben",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.image_with_text.label_abstand_unten",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.image_with_text.preset_bild_mit_text",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

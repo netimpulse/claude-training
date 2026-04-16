@@ -1,0 +1,121 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "cart": {
+      "title": "Cart",
+      "item_count": {
+        "one": "{{ count }} item",
+        "other": "{{ count }} items"
+      }
+    },
+    "search": {
+      "placeholder": "What are you looking for?",
+      "submit": "Search",
+      "close": "Close search"
+    },
+    "navigation": {
+      "menu_open": "Open menu",
+      "menu_close": "Close menu",
+      "categories": "Categories",
+      "all_link": "All {{ title }}",
+      "empty_drawer": "Set up a menu for the drawer in the theme editor."
+    },
+    "social": {
+      "follow_on": "Follow on {{ platform }}"
+    },
+    "accessibility": {
+      "account": "Account",
+      "cart_icon": "Cart",
+      "search_icon": "Search",
+      "close": "Close",
+      "items_in_cart": "Items in cart:"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to cart",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "price": {
+        "regular_price": "Regular price",
+        "sale_price": "Sale price",
+        "from": "From {{ price }}",
+        "unit_price": "Unit price"
+      },
+      "quantity": {
+        "label": "Quantity",
+        "decrease": "Decrease quantity for {{ title }}",
+        "increase": "Increase quantity for {{ title }}"
+      },
+      "variant": {
+        "label": "Variant"
+      },
+      "media": {
+        "open_media": "Open media {{ index }} in gallery view",
+        "play_video": "Play video",
+        "load_model": "Load 3D model"
+      },
+      "description": "Description",
+      "share": "Share",
+      "vendor": "Vendor",
+      "type": "Type",
+      "sku": "SKU"
+    }
+  },
+  "404": {
+    "title": "404",
+    "not_found": "Page not found.",
+    "back_to_shopping": "Back to shopping"
+  },
+  "blog": {
+    "article_comments": "Comments",
+    "article_metadata_html": "{{ date }} by {{ author }}",
+    "comment_form_body": "Comment",
+    "comment_form_email": "Email",
+    "comment_form_name": "Name",
+    "comment_form_submit": "Post",
+    "comment_form_title": "Add a comment"
+  },
+  "cart": {
+    "checkout": "Checkout",
+    "title": "Cart",
+    "update": "Update",
+    "remove": "Remove",
+    "empty": "Your cart is empty"
+  },
+  "customers": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "title": "Login"
+    }
+  },
+  "collections": {
+    "title": "Collections"
+  },
+  "gift_card": {
+    "add_to_apple_wallet": "Add to Apple Wallet",
+    "card": "Gift card",
+    "expired": "This gift card has expired",
+    "expires_on": "Expires on {{ expires_on }}",
+    "use_at_checkout": "Use this gift card at checkout"
+  },
+  "password": {
+    "title": "This shop is private",
+    "password": "Password",
+    "enter": "Enter"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search articles, pages, or products",
+    "submit": "Search",
+    "no_results_html": "No results found for {{ terms }}",
+    "results_for_html": "{{ count }} results found for {{ terms }}"
+  },
+  "newsletter": {
+    "email_label": "Email",
+    "subscribe": "Subscribe",
+    "success": "Thank you for subscribing!"
+  }
+}

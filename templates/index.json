@@ -1,0 +1,83 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "s1": { "type": "slide", "settings": { "heading": "Kollektion SS26", "subheading": "Neuer Drop", "button_label": "Jetzt shoppen", "button_link": "/collections/all" } },
+        "s2": { "type": "slide", "settings": { "heading": "Essentials", "subheading": "Zeitlos & reduziert", "button_label": "Entdecken", "button_link": "/collections/all" } }
+      },
+      "block_order": ["s1", "s2"],
+      "settings": { "mode": "slideshow", "height": "large", "autoplay": true }
+    },
+    "usp": {
+      "type": "usp-bar",
+      "blocks": {
+        "u1": { "type": "usp", "settings": { "heading": "Kostenloser Versand", "subtext": "Ab 80 €" } },
+        "u2": { "type": "usp", "settings": { "heading": "30 Tage Rückgabe", "subtext": "Unkompliziert" } },
+        "u3": { "type": "usp", "settings": { "heading": "Sichere Bezahlung", "subtext": "SSL-verschlüsselt" } },
+        "u4": { "type": "usp", "settings": { "heading": "Nachhaltig", "subtext": "Zertifizierte Materialien" } }
+      },
+      "block_order": ["u1", "u2", "u3", "u4"]
+    },
+    "categories": {
+      "type": "collection-grid",
+      "blocks": {
+        "c1": { "type": "category", "settings": { "heading": "Damen" } },
+        "c2": { "type": "category", "settings": { "heading": "Herren" } },
+        "c3": { "type": "category", "settings": { "heading": "Jacken" } },
+        "c4": { "type": "category", "settings": { "heading": "Accessoires" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4"],
+      "settings": { "heading": "Shop by Category", "columns": 4 }
+    },
+    "showcase": {
+      "type": "product-showcase",
+      "blocks": {
+        "a1": { "type": "accordion", "settings": { "heading": "Details & Material" } },
+        "a2": { "type": "accordion", "settings": { "heading": "Pflegehinweise" } },
+        "a3": { "type": "accordion", "settings": { "heading": "Versand & Rückgabe" } }
+      },
+      "block_order": ["a1", "a2", "a3"]
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": { "heading": "Bestseller", "limit": 8, "columns": 4 }
+    },
+    "story": {
+      "type": "image-with-text",
+      "settings": { "heading": "Zeitlose Mode, sorgfältig gemacht", "eyebrow": "Unsere Geschichte" }
+    },
+    "lookbook": {
+      "type": "lookbook",
+      "blocks": {
+        "ls1": { "type": "scene", "settings": { "caption": "Look 01" } },
+        "ls2": { "type": "scene", "settings": { "caption": "Look 02" } }
+      },
+      "block_order": ["ls1", "ls2"]
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "t1": { "type": "testimonial" },
+        "t2": { "type": "testimonial" },
+        "t3": { "type": "testimonial" }
+      },
+      "block_order": ["t1", "t2", "t3"]
+    },
+    "social": {
+      "type": "social-feed",
+      "blocks": {
+        "p1": { "type": "post" },
+        "p2": { "type": "post" },
+        "p3": { "type": "post" },
+        "p4": { "type": "post" },
+        "p5": { "type": "post" }
+      },
+      "block_order": ["p1", "p2", "p3", "p4", "p5"]
+    },
+    "newsletter": {
+      "type": "newsletter"
+    }
+  },
+  "order": ["hero", "usp", "categories", "showcase", "featured", "story", "lookbook", "testimonials", "social", "newsletter"]
+}

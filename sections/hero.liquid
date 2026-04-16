@@ -1,0 +1,469 @@
+{%- liquid
+  assign mode = section.settings.mode
+  assign slides = section.blocks | where: 'type', 'slide'
+-%}
+<section class="hero hero--{{ mode }} hero--h-{{ section.settings.height }} color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+  {%- if mode == 'video' -%}
+    <div class="hero__media hero__media--video">
+      {%- if section.settings.video != blank -%}
+        {{
+          section.settings.video
+          | video_tag:
+            autoplay: true,
+            loop: section.settings.video_loop,
+            muted: true,
+            controls: false,
+            playsinline: true,
+            preload: 'metadata',
+            image_size: '1920x',
+            class: 'hero__video'
+        }}
+      {%- elsif section.settings.video_url != blank -%}
+        <div class="hero__video-embed">
+          {%- if section.settings.video_url.type == 'youtube' -%}
+            <iframe
+              src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?autoplay=1&mute=1&loop=1&playlist={{ section.settings.video_url.id }}&controls=0&playsinline=1&rel=0&modestbranding=1"
+              title="Hero-Video"
+              frameborder="0"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowfullscreen
+              loading="eager"
+            ></iframe>
+          {%- else -%}
+            <iframe
+              src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay=1&muted=1&loop=1&controls=0&background=1"
+              title="Hero-Video"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+              loading="eager"
+            ></iframe>
+          {%- endif -%}
+        </div>
+      {%- elsif section.settings.fallback_image != blank -%}
+        {%- assign hero_alt = section.settings.heading | default: shop.name | escape -%}
+        {{ section.settings.fallback_image | image_url: width: 2000 | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            sizes: '100vw',
+            widths: '600,900,1200,1600,2000',
+            alt: hero_alt,
+            class: 'hero__image'
+        }}
+      {%- else -%}
+        <div class="hero__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+      {%- endif -%}
+      <div class="hero__overlay" style="background: rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+
+      <div class="hero__content hero__content--{{ section.settings.alignment }}">
+        {%- if section.settings.subheading != blank -%}<p class="hero__subheading">{{ section.settings.subheading | escape }}</p>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h1 class="hero__heading">{{ section.settings.heading | escape }}</h1>{%- endif -%}
+        {%- if section.settings.text != blank -%}<div class="hero__text">{{ section.settings.text }}</div>{%- endif -%}
+        {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+          <a class="hero__btn" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_label_2 != blank and section.settings.button_link_2 != blank -%}
+          <a class="hero__btn hero__btn--ghost" href="{{ section.settings.button_link_2 }}">{{ section.settings.button_label_2 | escape }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- else -%}
+    {%- comment -%} SLIDESHOW MODE {%- endcomment -%}
+    <hero-slideshow
+      class="hero__slideshow"
+      data-autoplay="{{ section.settings.autoplay }}"
+      data-speed="{{ section.settings.autoplay_speed }}"
+    >
+      <div class="hero__track" data-slides>
+        {%- for block in slides -%}
+          {%- liquid
+            assign img_loading = 'lazy'
+            assign img_priority = 'auto'
+            if forloop.first
+              assign img_loading = 'eager'
+              assign img_priority = 'high'
+            endif
+          -%}
+          <div class="hero__slide {% if forloop.first %}is-active{% endif %}" {{ block.shopify_attributes }}>
+            <div class="hero__media">
+              {%- if block.settings.image != blank -%}
+                {%- assign slide_alt = block.settings.heading | default: 'Hero' | escape -%}
+                {{ block.settings.image | image_url: width: 2000 | image_tag:
+                    loading: img_loading,
+                    fetchpriority: img_priority,
+                    sizes: '100vw',
+                    widths: '600,900,1200,1600,2000',
+                    alt: slide_alt,
+                    class: 'hero__image'
+                }}
+              {%- else -%}
+                <div class="hero__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+              {%- endif -%}
+              <div class="hero__overlay" style="background: rgba(0,0,0,{{ block.settings.overlay_opacity | divided_by: 100.0 }});"></div>
+            </div>
+            <div class="hero__content hero__content--{{ block.settings.alignment }}">
+              {%- if block.settings.subheading != blank -%}<p class="hero__subheading">{{ block.settings.subheading | escape }}</p>{%- endif -%}
+              {%- if block.settings.heading != blank -%}<h2 class="hero__heading">{{ block.settings.heading | escape }}</h2>{%- endif -%}
+              {%- if block.settings.text != blank -%}<div class="hero__text">{{ block.settings.text }}</div>{%- endif -%}
+              {%- if block.settings.button_label != blank and block.settings.button_link != blank -%}
+                <a class="hero__btn" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      {%- if slides.size > 1 -%}
+        <button type="button" class="hero__arrow hero__arrow--prev" aria-label="Vorheriger Slide" data-prev>
+          {%- render 'icon', name: 'chevron' -%}
+        </button>
+        <button type="button" class="hero__arrow hero__arrow--next" aria-label="Nächster Slide" data-next>
+          {%- render 'icon', name: 'chevron' -%}
+        </button>
+        <div class="hero__dots" role="tablist" aria-label="Slides">
+          {%- for block in slides -%}
+            <button type="button" class="hero__dot {% if forloop.first %}is-active{% endif %}" role="tab" aria-label="Slide {{ forloop.index }}" data-dot="{{ forloop.index0 }}"></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </hero-slideshow>
+  {%- endif -%}
+</section>
+
+{% style %}
+  {%- assign scheme = section.settings.color_scheme -%}
+  {%- if scheme -%}
+  .color-{{ scheme.id }} {
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+    --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+    --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+    --color-shadow: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    {%- if scheme.settings.background_gradient != blank -%}
+    background: {{ scheme.settings.background_gradient }};
+    {%- endif -%}
+  }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} {
+    --hero-text-color: {{ section.settings.text_color }};
+    --hero-btn-bg: {{ section.settings.button_bg }};
+    --hero-btn-fg: {{ section.settings.button_fg }};
+  }
+{% endstyle %}
+
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hero-slideshow.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "t:sections.hero.name_hero",
+  "tag": "section",
+  "class": "section-hero",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.hero.label_farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "mode",
+      "label": "t:sections.hero.label_modus",
+      "default": "slideshow",
+      "options": [
+        {
+          "value": "slideshow",
+          "label": "t:sections.hero.option_diashow_bilder"
+        },
+        {
+          "value": "video",
+          "label": "t:sections.hero.option_video"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "t:sections.hero.label_hoehe",
+      "default": "large",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.hero.option_klein_50vh"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.hero.option_mittel_70vh"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.hero.option_gross_85vh"
+        },
+        {
+          "value": "full",
+          "label": "t:sections.hero.option_voll_100vh"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.hero.content_diashow_wenn_modus_diashow"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:sections.hero.label_automatisch_weiter",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 3000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "label": "t:sections.hero.label_geschwindigkeit",
+      "default": 5500
+    },
+    {
+      "type": "header",
+      "content": "t:sections.hero.content_video_wenn_modus_video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "t:sections.hero.label_hochgeladenes_video"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "t:sections.hero.label_youtube_vimeo_url",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "t:sections.hero.label_video_loopen",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "t:sections.hero.label_fallback_bild_wenn_kein_video"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.hero.content_text_buttons_video_modus",
+      "info": "t:sections.hero.info_im_diashow_modus_werden_text_und_buttons"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.hero.label_subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.hero.label_headline",
+      "default": "t:sections.hero.default_kollektion_ss26"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.hero.label_text",
+      "default": "t:sections.hero.default_p_neue_silhouetten_reduzierte_formen_p"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:sections.hero.label_button_1_text",
+      "default": "t:sections.hero.default_jetzt_shoppen"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.hero.label_button_1_link"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "t:sections.hero.label_button_2_text_optional"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "t:sections.hero.label_button_2_link"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:sections.hero.label_text_ausrichtung",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.hero.option_links"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.hero.option_zentriert"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.hero.option_rechts"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "t:sections.hero.label_overlay_opazitaet",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "t:sections.hero.content_farben"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.hero.label_textfarbe",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "t:sections.hero.label_button_hintergrund",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_fg",
+      "label": "t:sections.hero.label_button_text",
+      "default": "#111111"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "t:sections.hero_blocks.name_slide",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.hero.label_bild"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "t:sections.hero.label_subheading"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.hero.label_headline",
+          "default": "t:sections.hero.default_neuer_drop"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.hero.label_text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "t:sections.hero.label_button_text",
+          "default": "t:sections.hero.default_entdecken"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.hero.label_button_link"
+        },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "t:sections.hero.label_ausrichtung",
+          "default": "center",
+          "options": [
+            {
+              "value": "left",
+              "label": "t:sections.hero.option_links"
+            },
+            {
+              "value": "center",
+              "label": "t:sections.hero.option_zentriert"
+            },
+            {
+              "value": "right",
+              "label": "t:sections.hero.option_rechts"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 80,
+          "step": 5,
+          "unit": "%",
+          "label": "t:sections.hero.label_overlay",
+          "default": 25
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero.preset_hero_diashow",
+      "settings": {
+        "mode": "slideshow",
+        "color_scheme": "scheme-1"
+      },
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Kollektion SS26",
+            "button_label": "Jetzt shoppen"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Essentials",
+            "button_label": "Entdecken"
+          }
+        }
+      ]
+    },
+    {
+      "name": "t:sections.hero.preset_hero_video",
+      "settings": {
+        "mode": "video",
+        "heading": "Kollektion SS26",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

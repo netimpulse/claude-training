@@ -1,0 +1,143 @@
+{%- liquid
+  assign coll = section.settings.collection
+  assign limit = section.settings.limit
+-%}
+<section class="fp color-scheme color-{{ section.settings.color_scheme.id }}" data-section-id="{{ section.id }}">
+  <div class="fp__head">
+    {%- if section.settings.heading != blank -%}<h2 class="fp__title">{{ section.settings.heading | escape }}</h2>{%- endif -%}
+    {%- if coll != blank -%}<a class="fp__view-all" href="{{ coll.url }}">Alle anzeigen →</a>{%- endif -%}
+  </div>
+  <div class="fp__grid" style="--cols: {{ section.settings.columns }};">
+    {%- if coll != blank -%}
+      {%- for product in coll.products limit: limit -%}
+        {%- render 'product-card', product: product, show_vendor: section.settings.show_vendor -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        {%- render 'product-card' -%}
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+{% style %}
+  {%- assign scheme = section.settings.color_scheme -%}
+  {%- if scheme -%}
+  .color-{{ scheme.id }} {
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+    --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+    --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+    --color-shadow: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    {%- if scheme.settings.background_gradient != blank -%}
+    background: {{ scheme.settings.background_gradient }};
+    {%- endif -%}
+  }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} {
+    --fp-bg: {{ section.settings.bg_color }};
+    --fp-fg: {{ section.settings.text_color }};
+    --fp-padding-top: {{ section.settings.padding_top }}px;
+    --fp-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{% endstyle %}
+{{ 'section-featured-products.css' | asset_url | stylesheet_tag }}
+{% schema %}
+{
+  "name": "t:sections.featured_products.name_produkt_grid",
+  "tag": "section",
+  "class": "section-featured-products",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.featured_products.label_farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.featured_products.label_ueberschrift",
+      "default": "t:sections.featured_products.default_bestseller"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.featured_products.label_kollektion"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 2,
+      "max": 24,
+      "step": 1,
+      "label": "t:sections.featured_products.label_max_produkte",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "t:sections.featured_products.label_spalten_desktop",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "t:sections.featured_products.label_marke_anzeigen",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.featured_products.label_hintergrund",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.featured_products.label_text",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.featured_products.label_abstand_oben",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.featured_products.label_abstand_unten",
+      "default": 56
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured_products.preset_produkt_grid",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  ],
+  "disabled_on": {
+    "groups": [
+      "header",
+      "footer"
+    ]
+  }
+}
+{% endschema %}

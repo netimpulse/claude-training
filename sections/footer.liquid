@@ -1,0 +1,417 @@
+<footer class="site-footer" role="contentinfo" data-section-id="{{ section.id }}">
+  <div class="site-footer__inner">
+    {%- comment -%} Brand / about column {%- endcomment -%}
+    <div class="site-footer__col site-footer__col--brand">
+      {%- if section.settings.logo != blank -%}
+        {%- assign footer_logo_alt = shop.name | escape -%}
+        {{
+          section.settings.logo
+          | image_url: width: 300
+          | image_tag:
+            loading: 'lazy',
+            sizes: '160px',
+            widths: '160,240,320',
+            alt: footer_logo_alt,
+            class: 'site-footer__logo'
+        }}
+      {%- else -%}
+        <p class="site-footer__brand">{{ shop.name | escape }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.about != blank -%}
+        <div class="site-footer__about">{{ section.settings.about }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.show_socials -%}
+        <ul class="site-footer__socials" role="list">
+          {%- if section.settings.social_instagram != blank -%}
+            <li><a href="{{ section.settings.social_instagram }}" aria-label="Instagram" target="_blank" rel="noopener">{%- render 'icon', name: 'instagram' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_tiktok != blank -%}
+            <li><a href="{{ section.settings.social_tiktok }}" aria-label="TikTok" target="_blank" rel="noopener">{%- render 'icon', name: 'tiktok' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_facebook != blank -%}
+            <li><a href="{{ section.settings.social_facebook }}" aria-label="Facebook" target="_blank" rel="noopener">{%- render 'icon', name: 'facebook' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_youtube != blank -%}
+            <li><a href="{{ section.settings.social_youtube }}" aria-label="YouTube" target="_blank" rel="noopener">{%- render 'icon', name: 'youtube' -%}</a></li>
+          {%- endif -%}
+          {%- if section.settings.social_pinterest != blank -%}
+            <li><a href="{{ section.settings.social_pinterest }}" aria-label="Pinterest" target="_blank" rel="noopener">{%- render 'icon', name: 'pinterest' -%}</a></li>
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Menu columns via blocks {%- endcomment -%}
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'menu' -%}
+          <div class="site-footer__col site-footer__col--menu" {{ block.shopify_attributes }}>
+            <h4 class="site-footer__heading">{{ block.settings.heading | escape }}</h4>
+            {%- if block.settings.menu != blank -%}
+              <ul class="site-footer__list" role="list">
+                {%- for link in block.settings.menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+        {%- when 'text' -%}
+          <div class="site-footer__col site-footer__col--text" {{ block.shopify_attributes }}>
+            <h4 class="site-footer__heading">{{ block.settings.heading | escape }}</h4>
+            {%- if block.settings.text != blank -%}
+              <div class="site-footer__text">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        {%- when 'newsletter' -%}
+          <div class="site-footer__col site-footer__col--newsletter" {{ block.shopify_attributes }}>
+            <h4 class="site-footer__heading">{{ block.settings.heading | escape }}</h4>
+            {%- if block.settings.text != blank -%}
+              <p class="site-footer__newsletter-text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+            {%- form 'customer', class: 'site-footer__newsletter-form' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <label for="FooterNewsletter-{{ section.id }}" class="visually-hidden">E-Mail-Adresse</label>
+              <div class="site-footer__newsletter-inputs">
+                <input
+                  id="FooterNewsletter-{{ section.id }}"
+                  type="email"
+                  name="contact[email]"
+                  placeholder="{{ block.settings.placeholder | default: 'E-Mail-Adresse' | escape }}"
+                  autocomplete="email"
+                  required
+                >
+                <button type="submit" aria-label="Anmelden">
+                  {%- render 'icon', name: 'arrow' -%}
+                </button>
+              </div>
+              {%- if form.posted_successfully? -%}
+                <p class="site-footer__newsletter-success" role="status">Danke – du bist angemeldet.</p>
+              {%- endif -%}
+              {%- if form.errors -%}
+                <p class="site-footer__newsletter-error" role="alert">{{ form.errors | default_errors }}</p>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Policies row (auto-linked to Shopify shop policies) {%- endcomment -%}
+  {%- if section.settings.show_policies -%}
+    <div class="site-footer__policies">
+      <ul role="list">
+        {%- if shop.privacy_policy -%}
+          <li><a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title | escape }}</a></li>
+        {%- endif -%}
+        {%- if shop.terms_of_service -%}
+          <li><a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title | escape }}</a></li>
+        {%- endif -%}
+        {%- if shop.refund_policy -%}
+          <li><a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title | escape }}</a></li>
+        {%- endif -%}
+        {%- if shop.shipping_policy -%}
+          <li><a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title | escape }}</a></li>
+        {%- endif -%}
+        {%- if shop.subscription_policy -%}
+          <li><a href="{{ shop.subscription_policy.url }}">{{ shop.subscription_policy.title | escape }}</a></li>
+        {%- endif -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} Bottom bar: copyright + payments + locale/country {%- endcomment -%}
+  <div class="site-footer__bottom">
+    <div class="site-footer__copy">
+      &copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}
+      {%- if section.settings.show_powered -%} · {{ powered_by_link }}{%- endif -%}
+    </div>
+
+    {%- if section.settings.show_country_selector and localization.available_countries.size > 1 -%}
+      <div class="site-footer__country">
+        {%- form 'localization', id: 'FooterCountryForm', class: 'site-footer__localization' -%}
+          <label for="FooterCountry-{{ section.id }}">Land/Region</label>
+          <select id="FooterCountry-{{ section.id }}" name="country_code" onchange="this.form.submit()">
+            {%- for country in localization.available_countries -%}
+              <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+              </option>
+            {%- endfor -%}
+          </select>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_payments -%}
+      <ul class="site-footer__payments" role="list" aria-label="Zahlungsmethoden">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% style %}
+  {%- assign scheme = section.settings.color_scheme -%}
+  {%- if scheme -%}
+  .color-{{ scheme.id }} {
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+    --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+    --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+    --color-shadow: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    {%- if scheme.settings.background_gradient != blank -%}
+    background: {{ scheme.settings.background_gradient }};
+    {%- endif -%}
+  }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} {
+    --footer-bg: {{ section.settings.bg_color }};
+    --footer-fg: {{ section.settings.text_color }};
+    --footer-heading: {{ section.settings.heading_color }};
+    --footer-padding-top: {{ section.settings.padding_top }}px;
+    --footer-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+{% endstyle %}
+
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+
+{% schema %}
+{
+  "name": "t:sections.footer.name_footer",
+  "tag": "section",
+  "class": "section-site-footer",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.footer.label_farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.content_marke"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "t:sections.footer.label_footer_logo"
+    },
+    {
+      "type": "richtext",
+      "id": "about",
+      "label": "t:sections.footer.label_kurzbeschreibung",
+      "default": "t:sections.footer.default_p_moderne_fashion_brand_fuer_jeden_tag_n"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.content_social_media"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_socials",
+      "label": "t:sections.footer.label_social_icons_anzeigen",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "t:sections.footer.label_instagram_url"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "t:sections.footer.label_tiktok_url"
+    },
+    {
+      "type": "url",
+      "id": "social_facebook",
+      "label": "t:sections.footer.label_facebook_url"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "t:sections.footer.label_youtube_url"
+    },
+    {
+      "type": "url",
+      "id": "social_pinterest",
+      "label": "t:sections.footer.label_pinterest_url"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.content_rechtliches_shopify_policies"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.footer.content_agb_datenschutz_widerrufsbelehrung_impre"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "t:sections.footer.label_policies_zeile_anzeigen",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.content_unten_leiste"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payments",
+      "label": "t:sections.footer.label_zahlungs_icons_anzeigen",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_country_selector",
+      "label": "t:sections.footer.label_laender_waehrungsauswahl_anzeigen",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_powered",
+      "label": "t:sections.footer.label_powered_by_shopify_anzeigen",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.content_farben"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.footer.label_hintergrund",
+      "default": "#0f0f0f"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.footer.label_text",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "t:sections.footer.label_ueberschriften",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.footer.content_abstaende"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer.label_oben",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.footer.label_unten",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "t:sections.footer_blocks.name_menue_spalte",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.footer.label_ueberschrift",
+          "default": "t:sections.footer.default_shop"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "t:sections.footer.label_menue"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.footer_blocks.name_text_spalte",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.footer.label_ueberschrift",
+          "default": "t:sections.footer.default_hilfe"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "t:sections.footer.label_text",
+          "default": "t:sections.footer.default_p_kontakt_hallo_dein_shop_de_br_mo_fr_9_"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "t:sections.footer_blocks.name_newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.footer.label_ueberschrift",
+          "default": "t:sections.footer.default_newsletter"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.footer.label_text",
+          "default": "t:sections.footer.default_10_auf_deine_erste_bestellung_exklusive_"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "t:sections.footer.label_placeholder",
+          "default": "t:sections.footer.default_e_mail_adresse"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.footer.preset_footer",
+      "blocks": [
+        {
+          "type": "menu"
+        },
+        {
+          "type": "menu"
+        },
+        {
+          "type": "menu"
+        },
+        {
+          "type": "newsletter"
+        }
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

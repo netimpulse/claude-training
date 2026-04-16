@@ -1,0 +1,62 @@
+{%- comment -%}
+  Renders a product card for grids/lookbooks.
+
+  @param {Object} product - Product object (required)
+  @param {String} [sizes] - sizes attribute for responsive images
+  @param {Boolean} [show_vendor] - Show vendor name (default: false)
+  @param {Boolean} [show_quick_add] - Show quick-add button (default: true)
+{%- endcomment -%}
+{%- liquid
+  assign card_sizes = sizes | default: '(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw'
+  assign card_widths = '300,450,600,750,900,1200'
+  assign product_title_safe = product.title | default: 'Example Product' | escape
+  assign primary_alt = product.featured_media.alt | default: product.title | escape
+-%}
+<article class="product-card">
+  <a class="product-card__media-link" href="{{ product.url | default: '#' }}" aria-label="{{ product_title_safe }}">
+    <div class="product-card__media">
+      {%- if product.featured_media != blank -%}
+        {{ product.featured_media | image_url: width: 800 | image_tag:
+          loading: 'lazy',
+          sizes: card_sizes,
+          widths: card_widths,
+          alt: primary_alt,
+          class: 'product-card__image product-card__image--primary'
+        }}
+        {%- if product.media.size > 1 -%}
+          {%- assign secondary_alt = product.media[1].alt | default: product.title | escape -%}
+          {{ product.media[1] | image_url: width: 800 | image_tag:
+            loading: 'lazy',
+            sizes: card_sizes,
+            widths: card_widths,
+            alt: secondary_alt,
+            class: 'product-card__image product-card__image--secondary'
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'product-card__placeholder' }}
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="product-card__info">
+    {%- if show_vendor and product.vendor != blank -%}
+      <p class="product-card__vendor">{{ product.vendor | escape }}</p>
+    {%- endif -%}
+
+    <h3 class="product-card__title">
+      <a href="{{ product.url | default: '#' }}">{{ product_title_safe }}</a>
+    </h3>
+
+    {%- render 'product-price', product: product -%}
+  </div>
+
+  {%- if show_quick_add != false and product.available -%}
+    <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="product-card__quick-add" data-quick-add-form>
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <button type="submit" class="product-card__quick-add-btn" name="add" aria-label="{{ 'products.product.add_to_cart' | t }} — {{ product_title_safe }}">
+        {{ 'products.product.add_to_cart' | t }}
+      </button>
+    </form>
+  {%- endif -%}
+</article>

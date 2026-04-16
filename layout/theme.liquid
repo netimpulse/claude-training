@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    {%- comment -%} Inlined CSS Variables + @font-face {%- endcomment -%}
+    {% render 'css-variables' %}
+
+    {%- comment -%}
+      Font preloading:
+      1. Preconnect to font CDN for faster connection
+      2. Preload only the critical font variant (base weight)
+      3. Additional variants load on-demand via @font-face
+    {%- endcomment -%}
+    {%- unless settings.type_primary_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
+    {%- endunless -%}
+
+    {%- comment -%} Favicon {%- endcomment -%}
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- comment -%} Critical CSS {%- endcomment -%}
+    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {%- comment -%} Meta tags, OG, JSON-LD {%- endcomment -%}
+    {% render 'meta-tags' %}
+
+    {{ content_for_header }}
+
+    <style>
+      .visually-hidden {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+      .page-width {
+        max-width: var(--page-width, 90rem);
+        margin: 0 auto;
+        padding-left: var(--page-margin, 20px);
+        padding-right: var(--page-margin, 20px);
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      .btn--primary {
+        background: rgb(var(--color-button, 18, 18, 18));
+        color: rgb(var(--color-button-label, 255, 255, 255));
+      }
+    </style>
+  </head>
+
+  <body>
+    {% sections 'header-group' %}
+
+    <main id="MainContent" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+  </body>
+</html>

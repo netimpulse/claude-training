@@ -1,0 +1,13 @@
+.section-newsletter { background: var(--nl-bg, #f6f5f2); color: var(--nl-fg, #111); padding: var(--nl-padding-top,72px) clamp(1rem,3vw,2rem) var(--nl-padding-bottom,72px); }
+.nl__inner { max-width: 640px; margin: 0 auto; text-align: center; }
+.nl__eyebrow { font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; opacity: .6; margin: 0 0 .75rem; }
+.nl__heading { font-size: clamp(1.5rem, 3vw, 2.25rem); margin: 0 0 .75rem; letter-spacing: -.01em; }
+.nl__text { margin: 0 0 1.5rem; opacity: .8; }
+.nl__form { max-width: 480px; margin: 0 auto; }
+.nl__input-wrap { display: flex; border-bottom: 1px solid rgba(0,0,0,.3); }
+.nl__input-wrap input { flex: 1; border: 0; background: transparent; padding: .75rem 0; font: inherit; color: inherit; outline: none; }
+.nl__input-wrap button { background: transparent; border: 0; padding: .5rem 1rem; font: inherit; color: inherit; letter-spacing: .06em; text-transform: uppercase; font-size: .85rem; cursor: pointer; }
+.nl__input-wrap button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.nl__success, .nl__error { margin: .75rem 0 0; font-size: .85rem; }
+.nl__success { color: #2e4e2e; }
+.nl__error { color: #8b0000; }

@@ -1,0 +1,320 @@
+{%- comment -%}
+  Product section — Theme Store compliant.
+  • Block-based layout (title, price, variant-picker, quantity, buy-buttons, description, share, custom-text, @app)
+  • Full media support (images, video, external_video, model)
+  • Sold-out / unavailable logic
+  • Variant JS (price update, URL update)
+  • Accessible labels, aria, skip-link target
+  • Empty-state placeholders
+  • JSON-LD via {{ product | structured_data }} in meta-tags snippet
+{%- endcomment -%}
+
+{{ 'section-product.css' | asset_url | stylesheet_tag }}
+
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+
+<section
+  id="product-{{ section.id }}"
+  class="product-section color-scheme color-{{ section.settings.color_scheme.id }}"
+  data-section-id="{{ section.id }}"
+>
+  {% style %}
+    {%- assign scheme = section.settings.color_scheme -%}
+    {%- if scheme -%}
+    .color-{{ scheme.id }} {
+      --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+      --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+      color: rgb(var(--color-text));
+      background-color: rgb(var(--color-background));
+    }
+    {%- endif -%}
+    #shopify-section-{{ section.id }} {
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  {% endstyle %}
+
+  <div class="product-section__inner page-width">
+    {%- comment -%} ====== MEDIA GALLERY ====== {%- endcomment -%}
+    <div class="product-section__media" data-product-media-container>
+      {%- if product.media.size > 0 -%}
+        {%- for media in product.media -%}
+          <div
+            class="product-section__media-item{% if media == featured_media %} product-section__media-item--active{% endif %}"
+            data-media-id="{{ media.id }}"
+            data-media-type="{{ media.media_type }}"
+            {{ media.shopify_attributes }}
+          >
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                {%- assign img_alt = media.alt | default: product.title | escape -%}
+                {{ media | image_url: width: 1200 | image_tag:
+                  loading: 'lazy',
+                  sizes: '(min-width: 990px) 50vw, 100vw',
+                  widths: '375,550,750,1000,1200',
+                  alt: img_alt,
+                  class: 'product-section__image'
+                }}
+
+              {%- when 'video' -%}
+                {{ media | video_tag:
+                  autoplay: true,
+                  muted: true,
+                  loop: section.settings.enable_video_looping,
+                  controls: true,
+                  class: 'product-section__video',
+                  preload: 'none'
+                }}
+
+              {%- when 'external_video' -%}
+                <div class="product-section__external-video">
+                  {{ media | external_video_tag: class: 'product-section__iframe' }}
+                </div>
+
+              {%- when 'model' -%}
+                <div class="product-section__model">
+                  {{ media | model_viewer_tag:
+                    reveal: 'interaction',
+                    toggleable: true,
+                    class: 'product-section__model-viewer'
+                  }}
+                </div>
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="product-section__media-item product-section__media-item--placeholder">
+          {{ 'product-1' | placeholder_svg_tag: 'product-section__placeholder' }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ====== PRODUCT INFO (Block-based) ====== {%- endcomment -%}
+    <div class="product-section__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+
+          {%- when 'title' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              {%- if product.title != blank -%}
+                <h1 class="product-section__title">{{ product.title | escape }}</h1>
+              {%- else -%}
+                <h1 class="product-section__title">{{ 'products.product.title' | t | default: 'Example product' }}</h1>
+              {%- endif -%}
+              {%- if block.settings.show_vendor and product.vendor != blank -%}
+                <p class="product-section__vendor">{{ product.vendor | escape }}</p>
+              {%- endif -%}
+            </div>
+
+          {%- when 'price' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              {%- render 'product-price', product: product, variant: current_variant -%}
+            </div>
+
+          {%- when 'variant_picker' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              {%- unless product.has_only_default_variant -%}
+                {%- for option in product.options_with_values -%}
+                  <div class="product-section__option">
+                    <label class="product-section__option-label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+                      {{ option.name | escape }}
+                    </label>
+                    <select
+                      id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                      class="product-section__option-select"
+                      data-option-index="{{ forloop.index0 }}"
+                    >
+                      {%- for value in option.values -%}
+                        <option
+                          value="{{ value | escape }}"
+                          {% if option.selected_value == value %}selected="selected"{% endif %}
+                        >
+                          {{ value | escape }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                  </div>
+                {%- endfor -%}
+              {%- endunless -%}
+            </div>
+
+          {%- when 'quantity' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              <label class="product-section__qty-label" for="Quantity-{{ section.id }}">
+                {{ 'products.product.quantity.label' | t }}
+              </label>
+              <div class="product-section__qty-wrapper">
+                <button
+                  type="button"
+                  class="product-section__qty-btn"
+                  data-qty-minus
+                  aria-label="{{ 'products.product.quantity.decrease' | t: title: product.title }}"
+                >
+                  &minus;
+                </button>
+                <input
+                  type="number"
+                  id="Quantity-{{ section.id }}"
+                  class="product-section__qty-input"
+                  name="quantity"
+                  min="1"
+                  value="1"
+                  data-qty-input
+                >
+                <button
+                  type="button"
+                  class="product-section__qty-btn"
+                  data-qty-plus
+                  aria-label="{{ 'products.product.quantity.increase' | t: title: product.title }}"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+          {%- when 'buy_buttons' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              {%- form 'product', product, id: 'ProductForm', data-product-form: '' -%}
+                <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+                <button
+                  type="submit"
+                  name="add"
+                  class="product-section__add-btn btn btn--primary"
+                  {% unless current_variant.available %}disabled{% endunless %}
+                >
+                  {%- if current_variant.available -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
+                </button>
+
+                {%- if block.settings.show_dynamic_checkout -%}
+                  {{ form | payment_button }}
+                {%- endif -%}
+              {%- endform -%}
+            </div>
+
+          {%- when 'description' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              {%- if product.description != blank -%}
+                <div class="product-section__description rte">
+                  {{ product.description }}
+                </div>
+              {%- endif -%}
+            </div>
+
+          {%- when 'share' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              <details class="product-section__share">
+                <summary class="product-section__share-btn">
+                  {%- render 'icon', name: 'arrow' -%}
+                  {{ 'products.product.share' | t }}
+                </summary>
+                <div class="product-section__share-content">
+                  <input
+                    type="text"
+                    class="product-section__share-url"
+                    value="{{ product.url | prepend: request.origin }}"
+                    readonly
+                    aria-label="{{ 'products.product.share' | t }}"
+                    onclick="this.select()"
+                  >
+                </div>
+              </details>
+            </div>
+
+          {%- when 'custom_text' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}
+                <h3 class="product-section__custom-heading">{{ block.settings.heading | escape }}</h3>
+              {%- endif -%}
+              {%- if block.settings.text != blank -%}
+                <div class="product-section__custom-text rte">{{ block.settings.text }}</div>
+              {%- endif -%}
+            </div>
+
+          {%- when '@app' -%}
+            <div class="product-section__block" {{ block.shopify_attributes }}>
+              {{ block | render }}
+            </div>
+
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'product-form.js' | asset_url }}" defer></script>
+<script type="application/json" id="ProductJson-{{ section.id }}">
+  {{ product.variants | json }}
+</script>
+
+{% schema %}
+{
+  "name": "t:sections.product.name",
+  "tag": "section",
+  "class": "section-product",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:labels.color_scheme", "default": "scheme-1" },
+    { "type": "header", "content": "t:sections.product.media_heading" },
+    { "type": "checkbox", "id": "enable_video_looping", "label": "t:sections.product.enable_video_looping", "default": false },
+    {
+      "type": "select", "id": "media_size", "label": "t:sections.product.media_size", "default": "medium",
+      "options": [
+        { "value": "small", "label": "t:sections.product.media_size_small" },
+        { "value": "medium", "label": "t:sections.product.media_size_medium" },
+        { "value": "large", "label": "t:sections.product.media_size_large" }
+      ]
+    },
+    { "type": "header", "content": "t:labels.padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:labels.padding_top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:labels.padding_bottom", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "title", "name": "t:sections.product.title_block", "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_vendor", "label": "t:labels.show_vendor", "default": false }
+      ]
+    },
+    { "type": "price", "name": "t:sections.product.price_block", "limit": 1 },
+    { "type": "variant_picker", "name": "t:sections.product.variant_picker_block", "limit": 1 },
+    { "type": "quantity", "name": "t:sections.product.quantity_block", "limit": 1 },
+    {
+      "type": "buy_buttons", "name": "t:sections.product.buy_buttons_block", "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "t:sections.product.show_dynamic_checkout", "default": true }
+      ]
+    },
+    { "type": "description", "name": "t:sections.product.description_block", "limit": 1 },
+    { "type": "share", "name": "t:sections.product.share_block", "limit": 1 },
+    {
+      "type": "custom_text", "name": "t:sections.product.custom_text_block",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "t:sections.product.custom_text_heading" },
+        { "type": "richtext", "id": "text", "label": "t:sections.product.custom_text_text" }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.product.name",
+      "blocks": [
+        { "type": "title" },
+        { "type": "price" },
+        { "type": "variant_picker" },
+        { "type": "quantity" },
+        { "type": "buy_buttons" },
+        { "type": "description" }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

@@ -1,0 +1,196 @@
+{%- liquid
+  assign has_blocks = false
+  if section.blocks.size > 0
+    assign has_blocks = true
+  endif
+-%}
+{% if has_blocks %}
+  <div class="announcement-bar" role="region" aria-label="Ankündigungen"
+       style="--ab-bg: {{ section.settings.bg_color }}; --ab-fg: {{ section.settings.text_color }};">
+    <announcement-bar class="announcement-bar__track" data-autoplay="{{ section.settings.autoplay }}" data-speed="{{ section.settings.speed }}">
+      {%- for block in section.blocks -%}
+        <div class="announcement-bar__slide" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+          {%- else -%}
+            <span>{{ block.settings.text | escape }}</span>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </announcement-bar>
+  </div>
+{% endif %}
+
+<style>
+  .announcement-bar {
+    background: var(--ab-bg, #111);
+    color: var(--ab-fg, #fff);
+    font-size: .8125rem;
+    letter-spacing: .04em;
+    overflow: hidden;
+  }
+  .announcement-bar__track {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: .5rem 1rem;
+    position: relative;
+  }
+  .announcement-bar__slide {
+    display: none;
+    text-align: center;
+  }
+  .announcement-bar__slide.is-active { display: block; }
+  .announcement-bar a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .announcement-bar__slide { transition: none !important; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.customElements.get('announcement-bar')) return;
+    class AnnouncementBar extends HTMLElement {
+      connectedCallback() {
+        this.slides = this.querySelectorAll('.announcement-bar__slide');
+        if (!this.slides.length) return;
+        this.index = 0;
+        this.slides[0].classList.add('is-active');
+        const autoplay = this.dataset.autoplay === 'true';
+        const speed = parseInt(this.dataset.speed, 10) || 4000;
+        if (autoplay && this.slides.length > 1) {
+          this.timer = setInterval(() => this.next(), speed);
+        }
+      }
+      disconnectedCallback() {
+        if (this.timer) clearInterval(this.timer);
+      }
+      next() {
+        this.slides[this.index].classList.remove('is-active');
+        this.index = (this.index + 1) % this.slides.length;
+        this.slides[this.index].classList.add('is-active');
+      }
+    }
+    customElements.define('announcement-bar', AnnouncementBar);
+  })();
+</script>
+
+{% style %}
+  {%- assign scheme = section.settings.color_scheme -%}
+  {%- if scheme -%}
+  .color-{{ scheme.id }} {
+    --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+    --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+    --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+    --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+    --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }}, {{ scheme.settings.secondary_button_label.green }}, {{ scheme.settings.secondary_button_label.blue }};
+    --color-shadow: {{ scheme.settings.shadow.red }}, {{ scheme.settings.shadow.green }}, {{ scheme.settings.shadow.blue }};
+    color: rgb(var(--color-text));
+    background-color: rgb(var(--color-background));
+    {%- if scheme.settings.background_gradient != blank -%}
+    background: {{ scheme.settings.background_gradient }};
+    {%- endif -%}
+  }
+  {%- endif -%}
+
+{% endstyle %}
+{% schema %}
+{
+  "name": "t:sections.announcement_bar.name_ankuendigungsbalken",
+  "tag": "section",
+  "class": "section-announcement-bar",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.announcement_bar.label_farbschema",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "t:sections.announcement_bar.label_hintergrundfarbe",
+      "default": "#111111"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.announcement_bar.label_textfarbe",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:sections.announcement_bar.label_automatisch_durchlaufen",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 2000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "label": "t:sections.announcement_bar.label_geschwindigkeit",
+      "default": 4000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "t:sections.announcement_bar_blocks.name_nachricht",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:sections.announcement_bar.label_text",
+          "default": "t:sections.announcement_bar.default_kostenloser_versand_ab_80"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement_bar.label_link_optional"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement_bar.preset_ankuendigungsbalken",
+      "blocks": [
+        {
+          "type": "message",
+          "settings": {
+            "text": "Kostenloser Versand ab 80 €"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "30 Tage Rückgaberecht"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "Neue Kollektion jetzt entdecken"
+          }
+        }
+      ],
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  ],
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  }
+}
+{% endschema %}
