@@ -27,6 +27,8 @@
   gap: 1rem;
   max-width: 1600px;
   margin: 0 auto;
+}
+
 /* logo_left: [logo+menu ............... icons] with burger at start */
 .site-header--logo_left .site-header__inner {
   grid-template-columns: auto 1fr auto;
@@ -36,6 +38,8 @@
   align-items: center;
   gap: 2rem;
   justify-content: flex-start;
+}
+
 /* logo_center: [burger ... logo(abs-center)+menu ... icons] */
 .site-header--logo_center .site-header__inner {
   grid-template-columns: 1fr auto 1fr;
@@ -54,6 +58,8 @@
   .site-header--logo_center .site-header__nav {
     display: flex;
   }
+}
+
 /* ---- Left / Right containers ---- */
 .site-header__left {
   display: flex;
@@ -66,6 +72,8 @@
   align-items: center;
   gap: .75rem;
   justify-content: flex-end;
+}
+
 /* ---- Icon buttons ---- */
 .icon {
   width: 1.5rem;
@@ -92,6 +100,8 @@
   font-size: .85rem;
   letter-spacing: .04em;
   text-transform: uppercase;
+}
+
 /* ---- Cart badge ---- */
 .site-header__cart { position: relative; }
 .site-header__cart-count {
@@ -116,6 +126,8 @@
   text-transform: uppercase;
   font-size: clamp(1rem, 2vw, 1.25rem);
   white-space: nowrap;
+}
+
 /* ---- Nav (main menu) ---- */
 .site-header__nav { display: none; }
 @media (min-width: 990px) {
@@ -173,6 +185,8 @@
   .site-header--logo_left .site-header__inner {
     grid-template-columns: auto 1fr auto;
   }
+}
+
 /* ============================================================
    DRAWERS
    ============================================================ */
@@ -194,6 +208,8 @@
   box-shadow: 0 30px 60px -20px rgba(0,0,0,.3);
   display: flex; flex-direction: column;
   transition: transform .3s cubic-bezier(.2,.8,.2,1);
+}
+
 /* Left panel (mega menu) */
 .site-drawer__panel--left {
   top: 0; left: 0; height: 100dvh; width: min(92vw, 440px);
@@ -218,6 +234,8 @@
 .site-drawer__title { font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
 .site-drawer__close {
   background: transparent; border: 0; color: inherit; padding: .25rem; cursor: pointer;
+}
+
 /* Drawer menu items */
 .site-drawer__menu { padding: 1rem 0; overflow-y: auto; flex: 1; }
 .site-drawer__list, .site-drawer__sublist, .site-drawer__sub2list {
