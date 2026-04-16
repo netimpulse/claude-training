@@ -1,23 +1,21 @@
-{%- assign logo_alt_text = shop.name | escape -%}
 {%- comment -%}
-  Rendert Shop-Logo als Bild oder Textlink.
-  Akzeptiert: settings (section.settings)
+  Renders the shop logo as image or text link.
+  Accepts: settings (section.settings)
 {%- endcomment -%}
+{%- assign logo_alt = shop.name | escape -%}
+{%- assign logo_w = settings.logo_width | default: 120 -%}
+{%- assign logo_w_2x = logo_w | times: 2 -%}
+{%- assign logo_style = 'width:' | append: logo_w | append: 'px;' -%}
 <a href="{{ routes.root_url }}" class="site-logo" aria-label="{{ shop.name | escape }}">
   {%- if settings.logo != blank -%}
-    {{
-      settings.logo
-      | image_url: width: settings.logo_width | times: 2
-      | image_tag:
+    {{ settings.logo | image_url: width: logo_w_2x | image_tag:
         loading: 'eager',
         fetchpriority: 'high',
         sizes: '(min-width: 768px) 200px, 120px',
         widths: '120,200,280,400,560',
-        alt: logo_alt_text,
-        style: 'width:' | append: settings.logo_width | append: 'px;',
+        alt: logo_alt,
+        style: logo_style,
         class: 'site-logo__image'
     }}
   {%- else -%}
-    <span class="site-logo__text">{{ shop.name | escape }}</span>
-  {%- endif -%}
-</a>
+    <s
