@@ -1,5 +1,37 @@
 {
   "sections": {
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "m1": { "type": "message", "settings": { "text": "Kostenloser Versand ab 80 €" } }
+      },
+      "block_order": ["m1"],
+      "settings": { "color_scheme": "scheme-2", "speed": 25, "font_size": 14, "gap": 3, "separator": "·", "padding_top": 12, "padding_bottom": 12 }
+    },
+    "hero": {
+      "type": "hero",
+      "blocks": {
+        "s1": { "type": "slide", "settings": { "heading": "Kollektion SS26", "subheading": "Neuer Drop", "button_label": "Jetzt shoppen", "button_link": "/collections/all" } }
+      },
+      "block_order": ["s1"],
+      "settings": { "color_scheme": "scheme-1", "mode": "slideshow", "height": "large", "autoplay": true }
+    },
+    "split_collection": {
+      "type": "split-collection",
+      "blocks": {
+        "sc1": { "type": "card", "settings": { "eyebrow": "Kollektion", "heading": "Damen", "button_text": "Entdecken" } }
+      },
+      "block_order": ["sc1"],
+      "settings": { "color_scheme": "scheme-1" }
+    },
+    "usp": {
+      "type": "usp-bar",
+      "blocks": {
+        "u1": { "type": "usp", "settings": { "heading": "Kostenloser Versand", "subtext": "Ab 80 €" } }
+      },
+      "block_order": ["u1"],
+      "settings": { "color_scheme": "scheme-1" }
+    },
     "countdown": {
       "type": "countdown",
       "settings": {
@@ -7,17 +39,22 @@
         "target_date": "2026-06-01T00:00:00",
         "eyebrow": "Coming soon",
         "heading": "New Collection Drop",
-        "text": "",
-        "button_label": "Get notified",
-        "button_link": "",
-        "overlay_opacity": 40,
-        "text_color": "#ffffff",
         "padding_top": 64,
         "padding_bottom": 64
       }
+    },
+    "showcase": {
+      "type": "product-showcase",
+      "blocks": {
+        "a1": { "type": "accordion", "settings": { "heading": "Details & Material" } }
+      },
+      "block_order": ["a1"],
+      "settings": { "color_scheme": "scheme-1" }
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": { "color_scheme": "scheme-1", "heading": "Bestseller", "limit": 8, "columns": 4 }
     }
   },
-  "order": [
-    "countdown"
-  ]
+  "order": ["marquee", "hero", "split_collection", "usp", "countdown", "showcase", "featured"]
 }
