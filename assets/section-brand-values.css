@@ -1,0 +1,85 @@
+.brand-values {
+  padding-top: var(--section-padding-top, 48px);
+  padding-bottom: var(--section-padding-bottom, 48px);
+}
+
+.brand-values__header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto clamp(2rem, 4vw, 3rem);
+}
+
+.brand-values__eyebrow {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0 0 0.5rem;
+  opacity: 0.7;
+}
+
+.brand-values__heading {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  margin: 0 0 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.brand-values__intro {
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.brand-values__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--bv-columns, 3), 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.brand-values__card {
+  text-align: center;
+  padding: clamp(1rem, 2vw, 2rem);
+}
+
+.brand-values__icon-wrap {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-values__icon-wrap svg {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-values__icon-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.brand-values__title {
+  font-size: clamp(0.9375rem, 1.5vw, 1.125rem);
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.brand-values__text {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.75;
+}
+
+@media (max-width: 749px) {
+  .brand-values__grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

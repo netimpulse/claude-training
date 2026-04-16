@@ -1,0 +1,160 @@
+{%- comment -%}
+  Marquee / Text Ticker — horizontally scrolling text strip.
+  Common in high-fashion brands for brand messaging, sale announcements, etc.
+  Uses CSS animation, no JS dependency. Duplicates content for seamless loop.
+{%- endcomment -%}
+
+{{ 'section-marquee.css' | asset_url | stylesheet_tag }}
+
+{%- assign scheme = section.settings.color_scheme -%}
+<section
+  class="marquee color-scheme color-{{ scheme.id }}"
+  data-section-id="{{ section.id }}"
+  aria-label="{{ 'sections.marquee.aria_label' | t }}"
+>
+  {% style %}
+    {%- if scheme -%}
+    .color-{{ scheme.id }} {
+      --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+      --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+      color: rgb(var(--color-text));
+      background-color: rgb(var(--color-background));
+      {%- if scheme.settings.background_gradient != blank -%}
+      background: {{ scheme.settings.background_gradient }};
+      {%- endif -%}
+    }
+    {%- endif -%}
+    #shopify-section-{{ section.id }} {
+      --marquee-speed: {{ section.settings.speed }}s;
+      --marquee-font-size: {{ section.settings.font_size }}px;
+      --marquee-gap: {{ section.settings.gap }}rem;
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  {% endstyle %}
+
+  <div class="marquee__track" aria-hidden="true">
+    {%- comment -%} Render blocks twice for seamless CSS loop {%- endcomment -%}
+    {%- for i in (1..2) -%}
+      <div class="marquee__content">
+        {%- for block in section.blocks -%}
+          <span class="marquee__item" {{ block.shopify_attributes }}>
+            {%- if block.settings.text != blank -%}
+              {{ block.settings.text | escape }}
+            {%- endif -%}
+          </span>
+          {%- if section.settings.separator != blank -%}
+            <span class="marquee__separator" aria-hidden="true">{{ section.settings.separator | escape }}</span>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Screen-reader accessible version {%- endcomment -%}
+  <div class="visually-hidden">
+    {%- for block in section.blocks -%}
+      {%- if block.settings.text != blank -%}
+        <p>{{ block.settings.text | escape }}</p>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.marquee.name",
+  "tag": "section",
+  "class": "section-marquee",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.color_scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 2,
+      "unit": "s",
+      "label": "t:sections.marquee.speed",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "t:sections.marquee.font_size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "unit": "rem",
+      "label": "t:sections.marquee.gap",
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "separator",
+      "label": "t:sections.marquee.separator",
+      "default": "·"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:labels.padding_top",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:labels.padding_bottom",
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "t:sections.marquee.block_name",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:labels.text",
+          "default": "t:sections.marquee.text_default"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.marquee.preset_name",
+      "blocks": [
+        { "type": "message", "settings": { "text": "Free shipping on orders over 80 €" } },
+        { "type": "message", "settings": { "text": "New collection — Shop now" } },
+        { "type": "message", "settings": { "text": "30-day returns" } },
+        { "type": "message", "settings": { "text": "Sustainably made" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

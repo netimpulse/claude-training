@@ -117,5 +117,17 @@
     "email_label": "Email",
     "subscribe": "Subscribe",
     "success": "Thank you for subscribing!"
+  },
+  "sections": {
+    "marquee": {
+      "aria_label": "Scrolling announcements"
+    },
+    "countdown": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Min",
+      "seconds": "Sec",
+      "expired": "The time has come!"
+    }
   }
 }

@@ -1,0 +1,197 @@
+{%- comment -%}
+  Editorial Grid — asymmetric masonry-style grid for fashion editorial imagery.
+  Each block can be normal (1 col) or wide (2 cols). Supports image + optional text overlay.
+  Fashion brands use this for lookbook-style content, campaign imagery.
+{%- endcomment -%}
+
+{{ 'section-editorial-grid.css' | asset_url | stylesheet_tag }}
+
+{%- assign scheme = section.settings.color_scheme -%}
+<section
+  class="editorial-grid color-scheme color-{{ scheme.id }}"
+  data-section-id="{{ section.id }}"
+>
+  {% style %}
+    {%- if scheme -%}
+    .color-{{ scheme.id }} {
+      --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+      --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+      --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+      --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+      color: rgb(var(--color-text));
+      background-color: rgb(var(--color-background));
+      {%- if scheme.settings.background_gradient != blank -%}
+      background: {{ scheme.settings.background_gradient }};
+      {%- endif -%}
+    }
+    {%- endif -%}
+    #shopify-section-{{ section.id }} {
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  {% endstyle %}
+
+  <div class="editorial-grid__inner page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="editorial-grid__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="editorial-grid__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2 class="editorial-grid__heading">{{ section.settings.heading | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="editorial-grid__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign is_wide = false
+          if block.settings.size == 'wide'
+            assign is_wide = true
+          endif
+          assign has_link = false
+          if block.settings.link != blank
+            assign has_link = true
+          endif
+        -%}
+        <div class="editorial-grid__item {% if is_wide %}editorial-grid__item--wide{% endif %}" {{ block.shopify_attributes }}>
+          {%- if has_link -%}<a href="{{ block.settings.link }}" class="editorial-grid__link">{%- endif -%}
+            <div class="editorial-grid__media {% if is_wide %}editorial-grid__media--wide{% endif %}">
+              {%- if block.settings.image != blank -%}
+                {%- assign grid_alt = block.settings.heading | default: shop.name | escape -%}
+                {%- assign grid_sizes = '(min-width: 990px) 33vw, 50vw' -%}
+                {%- if is_wide -%}{%- assign grid_sizes = '(min-width: 990px) 66vw, 100vw' -%}{%- endif -%}
+                {{ block.settings.image | image_url: width: 1400 | image_tag:
+                  loading: 'lazy',
+                  sizes: grid_sizes,
+                  widths: '400,600,800,1000,1200,1400',
+                  alt: grid_alt,
+                  class: 'editorial-grid__image'
+                }}
+              {%- else -%}
+                <div class="editorial-grid__placeholder">{{ 'lifestyle-1' | placeholder_svg_tag }}</div>
+              {%- endif -%}
+              <div class="editorial-grid__overlay"></div>
+            </div>
+            {%- if block.settings.heading != blank or block.settings.text != blank -%}
+              <div class="editorial-grid__content">
+                {%- if block.settings.heading != blank -%}
+                  <h3 class="editorial-grid__title">{{ block.settings.heading | escape }}</h3>
+                {%- endif -%}
+                {%- if block.settings.text != blank -%}
+                  <p class="editorial-grid__text">{{ block.settings.text | escape }}</p>
+                {%- endif -%}
+                {%- if has_link and block.settings.button_text != blank -%}
+                  <span class="editorial-grid__btn">{{ block.settings.button_text | escape }}</span>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- if has_link -%}</a>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.editorial_grid.name",
+  "tag": "section",
+  "class": "section-editorial-grid",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:sections.editorial_grid.heading_default"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:labels.padding_top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:labels.padding_bottom",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "t:sections.editorial_grid.block_name",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:labels.image"
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "t:sections.editorial_grid.size",
+          "default": "normal",
+          "options": [
+            { "value": "normal", "label": "t:sections.editorial_grid.size_normal" },
+            { "value": "wide", "label": "t:sections.editorial_grid.size_wide" }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:labels.heading"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "t:labels.text"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "t:labels.button_text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:labels.button_link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.editorial_grid.preset_name",
+      "blocks": [
+        { "type": "card", "settings": { "size": "wide", "heading": "Campaign SS26" } },
+        { "type": "card", "settings": { "size": "normal", "heading": "Essentials" } },
+        { "type": "card", "settings": { "size": "normal", "heading": "Accessories" } }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

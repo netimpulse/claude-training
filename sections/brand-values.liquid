@@ -1,0 +1,208 @@
+{%- comment -%}
+  Brand Values — Showcases brand pillars like sustainability, craftsmanship, etc.
+  Icons (via snippets/icon.liquid) + title + description per block.
+  Common in modern fashion brands to build trust and communicate brand DNA.
+{%- endcomment -%}
+
+{{ 'section-brand-values.css' | asset_url | stylesheet_tag }}
+
+{%- assign scheme = section.settings.color_scheme -%}
+<section
+  class="brand-values color-scheme color-{{ scheme.id }}"
+  data-section-id="{{ section.id }}"
+>
+  {% style %}
+    {%- if scheme -%}
+    .color-{{ scheme.id }} {
+      --color-background: {{ scheme.settings.background.red }}, {{ scheme.settings.background.green }}, {{ scheme.settings.background.blue }};
+      --color-text: {{ scheme.settings.text.red }}, {{ scheme.settings.text.green }}, {{ scheme.settings.text.blue }};
+      --color-button: {{ scheme.settings.button.red }}, {{ scheme.settings.button.green }}, {{ scheme.settings.button.blue }};
+      --color-button-label: {{ scheme.settings.button_label.red }}, {{ scheme.settings.button_label.green }}, {{ scheme.settings.button_label.blue }};
+      color: rgb(var(--color-text));
+      background-color: rgb(var(--color-background));
+      {%- if scheme.settings.background_gradient != blank -%}
+      background: {{ scheme.settings.background_gradient }};
+      {%- endif -%}
+    }
+    {%- endif -%}
+    #shopify-section-{{ section.id }} {
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+      --bv-columns: {{ section.settings.columns }};
+    }
+  {% endstyle %}
+
+  <div class="brand-values__inner page-width">
+    {%- if section.settings.heading != blank or section.settings.eyebrow != blank -%}
+      <div class="brand-values__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="brand-values__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="brand-values__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="brand-values__intro">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="brand-values__grid">
+        {%- for block in section.blocks -%}
+          <div class="brand-values__card" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="brand-values__icon-wrap">
+                {%- assign bv_alt = block.settings.heading | default: 'Value' | escape -%}
+                {{ block.settings.image | image_url: width: 120 | image_tag:
+                  loading: 'lazy',
+                  sizes: '60px',
+                  widths: '60,90,120',
+                  alt: bv_alt,
+                  class: 'brand-values__icon-img'
+                }}
+              </div>
+            {%- elsif block.settings.icon != blank -%}
+              <div class="brand-values__icon-wrap">
+                {%- render 'icon', name: block.settings.icon -%}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.heading != blank -%}
+              <h3 class="brand-values__title">{{ block.settings.heading | escape }}</h3>
+            {%- endif -%}
+
+            {%- if block.settings.text != blank -%}
+              <p class="brand-values__text">{{ block.settings.text | escape }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.brand_values.name",
+  "tag": "section",
+  "class": "section-brand-values",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:labels.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.subheading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "t:sections.brand_values.heading_default"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:labels.text"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "t:labels.columns",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:labels.padding_top",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:labels.padding_bottom",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "t:sections.brand_values.block_name",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:labels.image",
+          "info": "t:sections.brand_values.icon_info"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "t:sections.brand_values.icon_name",
+          "info": "t:sections.brand_values.icon_name_info"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:labels.heading",
+          "default": "t:sections.brand_values.value_heading_default"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:labels.text",
+          "default": "t:sections.brand_values.value_text_default"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.brand_values.preset_name",
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "heading": "Sustainable materials",
+            "text": "Certified organic cotton and recycled fabrics — because the planet matters."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "heading": "Made in Europe",
+            "text": "Designed in Berlin, manufactured in Portugal with fair working conditions."
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "heading": "Timeless design",
+            "text": "No fast fashion — pieces made to last and look good for years."
+          }
+        }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

@@ -18,7 +18,7 @@
       "menu_close": "Menü schließen",
       "categories": "Kategorien",
       "all_link": "Alle {{ title }}",
-      "empty_drawer": "Lege im Theme-Editor ein Menü für den Drawer an."
+      "empty_drawer": "Richte im Theme-Editor ein Menü für die Schublade ein."
     },
     "social": {
       "follow_on": "Folge uns auf {{ platform }}"
@@ -37,21 +37,21 @@
       "sold_out": "Ausverkauft",
       "unavailable": "Nicht verfügbar",
       "price": {
-        "regular_price": "Normaler Preis",
-        "sale_price": "Sonderpreis",
+        "regular_price": "Regulärer Preis",
+        "sale_price": "Sale-Preis",
         "from": "Ab {{ price }}",
         "unit_price": "Stückpreis"
       },
       "quantity": {
         "label": "Menge",
-        "decrease": "Menge verringern für {{ title }}",
-        "increase": "Menge erhöhen für {{ title }}"
+        "decrease": "Menge für {{ title }} verringern",
+        "increase": "Menge für {{ title }} erhöhen"
       },
       "variant": {
         "label": "Variante"
       },
       "media": {
-        "open_media": "Medium {{ index }} in Galerieansicht öffnen",
+        "open_media": "Medium {{ index }} in der Galerie öffnen",
         "play_video": "Video abspielen",
         "load_model": "3D-Modell laden"
       },
@@ -59,7 +59,7 @@
       "share": "Teilen",
       "vendor": "Hersteller",
       "type": "Typ",
-      "sku": "Artikelnummer"
+      "sku": "Artikelnr."
     }
   },
   "404": {
@@ -73,8 +73,8 @@
     "comment_form_body": "Kommentar",
     "comment_form_email": "E-Mail",
     "comment_form_name": "Name",
-    "comment_form_submit": "Senden",
-    "comment_form_title": "Kommentar hinzufügen"
+    "comment_form_submit": "Absenden",
+    "comment_form_title": "Kommentar hinterlassen"
   },
   "cart": {
     "checkout": "Zur Kasse",
@@ -88,7 +88,7 @@
       "email": "E-Mail",
       "password": "Passwort",
       "submit": "Anmelden",
-      "title": "Anmeldung"
+      "title": "Anmelden"
     }
   },
   "collections": {
@@ -99,12 +99,12 @@
     "card": "Geschenkkarte",
     "expired": "Diese Geschenkkarte ist abgelaufen",
     "expires_on": "Gültig bis {{ expires_on }}",
-    "use_at_checkout": "Diese Geschenkkarte an der Kasse einlösen"
+    "use_at_checkout": "Verwende diese Geschenkkarte an der Kasse"
   },
   "password": {
     "title": "Dieser Shop ist privat",
     "password": "Passwort",
-    "enter": "Eintreten"
+    "enter": "Betreten"
   },
   "search": {
     "title": "Suche",
@@ -115,7 +115,19 @@
   },
   "newsletter": {
     "email_label": "E-Mail",
-    "subscribe": "Abonnieren",
-    "success": "Vielen Dank für dein Abonnement!"
+    "subscribe": "Anmelden",
+    "success": "Danke – du bist angemeldet!"
+  },
+  "sections": {
+    "marquee": {
+      "aria_label": "Laufende Ankündigungen"
+    },
+    "countdown": {
+      "days": "Tage",
+      "hours": "Std",
+      "minutes": "Min",
+      "seconds": "Sek",
+      "expired": "Es ist so weit!"
+    }
   }
 }
