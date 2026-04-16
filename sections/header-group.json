@@ -1,11 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header",
   "sections": {
     "header": {
       "type": "header",
-      "settings": {}
+      "settings": {
+        "layout": "logo_center",
+        "sticky": true,
+        "height": 80,
+        "logo_width": 140,
+        "show_main_menu": true,
+        "main_menu": "main-menu",
+        "burger_label": "",
+        "drawer_title": "",
+        "drawer_menu": "gg",
+        "show_search": true,
+        "show_account": true,
+        "bg_color": "#ffffff",
+        "text_color": "#111111",
+        "accent_color": "#111111"
+      }
     }
   },
-  "order": ["header"]
+  "order": [
+    "header"
+  ]
 }
