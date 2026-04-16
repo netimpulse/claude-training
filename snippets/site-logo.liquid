@@ -18,4 +18,6 @@
         class: 'site-logo__image'
     }}
   {%- else -%}
-    <s
+    <span class="site-logo__text">{{ shop.name | escape }}</span>
+  {%- endif -%}
+</a>
