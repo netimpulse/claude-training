@@ -78,60 +78,75 @@ body {
   color: var(--color-foreground);
 }
 
-/** Section layout utilities */
-
 /**
- * Setup a grid that enables both full-width and constrained layouts
- * depending on the class of the child elements.
- *
- * By default, a minimum content margin is set on the left and right
- * sides of the section and the content is centered in the viewport to
- * not exceed the maximum page width.
- *
- * When a child element is given the `full-width` class, it will span
- * the entire viewport.
+ * Section layout — Dawn approach.
+ * .shopify-section is a transparent wrapper: no grid, no margins, no padding.
+ * Each section controls its own width via inner .page-width wrappers.
+ * Full-bleed sections (hero, footer, header) simply don't use .page-width.
  */
 .shopify-section {
-  --content-width: min(
-    calc(var(--page-width) - var(--page-margin) * 2),
-    calc(100% - var(--page-margin) * 2)
-  );
-  --content-margin: minmax(var(--page-margin), 1fr);
-  --content-grid: var(--content-margin) var(--content-width) var(--content-margin);
-
-  /* This is required to make <img> elements work as background images */
   position: relative;
-  grid-template-columns: var(--content-grid);
-  display: grid;
-  width: 100%;
 }
 
-/* Child elements, by default, are constrained to the central column of the grid. */
-.shopify-section > * {
-  grid-column: 2;
+/**
+ * .page-width constrains content to the configured max-width with side padding.
+ * Sections that want constrained content use this on an inner wrapper.
+ * Sections that want edge-to-edge (hero, footer, header) skip this class entirely.
+ */
+.page-width {
+  max-width: var(--page-width, 120rem);
+  margin: 0 auto;
+  padding-left: var(--page-margin, 1.5rem);
+  padding-right: var(--page-margin, 1.5rem);
 }
 
-/* Child elements that use the full-width utility class span the entire viewport. */
-.shopify-section > .full-width {
-  grid-column: 1 / -1;
+.page-width--narrow {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding-left: var(--page-margin, 1.5rem);
+  padding-right: var(--page-margin, 1.5rem);
 }
 
-/* Header and footer section groups must be full-width (edge to edge),
-   they constrain their own content via inner max-width.
-   Shopify wraps section groups in .shopify-section-group-{name}
-   and each section within still gets .shopify-section wrapper. */
-.shopify-section-group-header-group .shopify-section > *,
-.shopify-section-group-footer-group .shopify-section > * {
-  grid-column: 1 / -1;
+/* Section padding utility — used by all sections with padding_top/padding_bottom settings */
+.section-padding {
+  padding-top: var(--section-padding-top, 36px);
+  padding-bottom: var(--section-padding-bottom, 36px);
 }
 
-/* Also target any .full-width child inside section groups */
-.shopify-section-group-header-group .shopify-section,
-.shopify-section-group-footer-group .shopify-section {
-  display: block;
-}
-
-/* ===== Fashion theme utilities ===== */
+/* ===== Accessibility ===== */
 .visually-hidden {
   position: absolute !important;
-  width: 1px; height: 1px
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-to-content-link:focus {
+  z-index: 9999;
+  position: fixed;
+  top: 0; left: 0;
+  width: auto; height: auto;
+  padding: 1rem 2rem;
+  margin: 0;
+  clip: auto;
+  overflow: visible;
+  white-space: normal;
+  background: rgb(var(--color-background, 255, 255, 255));
+  color: rgb(var(--color-text, 18, 18, 18));
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+/* ===== Buttons ===== */
+button { font: inherit; cursor: pointer; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  curso

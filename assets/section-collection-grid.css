@@ -1,4 +1,4 @@
-.section-collection-grid { background: var(--cg-bg, #fff); color: var(--cg-fg, #111); padding: var(--cg-padding-top,56px) clamp(1rem,3vw,2rem) var(--cg-padding-bottom,56px); }
+.coll-grid { background: var(--cg-bg, #fff); color: var(--cg-fg, #111); padding: var(--cg-padding-top,56px) clamp(1rem,3vw,2rem) var(--cg-padding-bottom,56px); }
 .coll-grid__head { max-width: 1440px; margin: 0 auto 2rem; text-align: center; }
 .coll-grid__title { font-size: clamp(1.5rem, 3vw, 2.5rem); margin: 0 0 .5rem; letter-spacing: -.01em; }
 .coll-grid__sub { margin: 0; color: rgba(0,0,0,.7); }

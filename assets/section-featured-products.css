@@ -1,4 +1,4 @@
-.section-featured-products { background: var(--fp-bg, #fff); color: var(--fp-fg, #111); padding: var(--fp-padding-top,56px) clamp(1rem,3vw,2rem) var(--fp-padding-bottom,56px); }
+.fp { background: var(--fp-bg, #fff); color: var(--fp-fg, #111); padding: var(--fp-padding-top,56px) clamp(1rem,3vw,2rem) var(--fp-padding-bottom,56px); }
 .fp__head { max-width: 1440px; margin: 0 auto 1.5rem; display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; }
 .fp__title { margin: 0; font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: -.01em; }
 .fp__view-all { color: inherit; font-size: .9rem; text-transform: uppercase; letter-spacing: .06em; }

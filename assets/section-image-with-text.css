@@ -1,4 +1,4 @@
-.section-image-with-text { background: var(--iwt-bg, #fff); color: var(--iwt-fg, #111); padding: var(--iwt-padding-top,48px) clamp(1rem,3vw,2rem) var(--iwt-padding-bottom,48px); }
+.iwt { background: var(--iwt-bg, #fff); color: var(--iwt-fg, #111); padding: var(--iwt-padding-top,48px) clamp(1rem,3vw,2rem) var(--iwt-padding-bottom,48px); }
 .iwt__grid { max-width: 1440px; margin: 0 auto; display: grid; gap: clamp(1.5rem, 4vw, 3rem); grid-template-columns: 1fr; align-items: center; }
 @media (min-width: 820px) { .iwt__grid { grid-template-columns: 1fr 1fr; } .iwt--img-right .iwt__media { order: 2; } }
 .iwt__image { width: 100%; height: auto; aspect-ratio: 4/5; object-fit: cover; }

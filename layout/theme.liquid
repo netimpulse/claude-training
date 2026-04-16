@@ -1,21 +1,30 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html class="no-js" lang="{{ request.locale.iso_code }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="">
 
-    {%- comment -%} Inlined CSS Variables + @font-face {%- endcomment -%}
-    {% render 'css-variables' %}
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
 
-    {%- comment -%}
-      Font preloading:
-      1. Preconnect to font CDN for faster connection
-      2. Preload only the critical font variant (base weight)
-      3. Additional variants load on-demand via @font-face
-    {%- endcomment -%}
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {%- render 'meta-tags' -%}
+
+    <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+
+    {%- comment -%} CSS Variables + @font-face {%- endcomment -%}
+    {%- render 'css-variables' -%}
+
     {%- unless settings.type_primary_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
     {%- endunless -%}
 
     {%- comment -%} Favicon {%- endcomment -%}
@@ -23,55 +32,22 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
-    {%- comment -%} Critical CSS {%- endcomment -%}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {%- comment -%} Meta tags, OG, JSON-LD {%- endcomment -%}
-    {% render 'meta-tags' %}
-
     {{ content_for_header }}
-
-    <style>
-      .visually-hidden {
-        position: absolute !important;
-        width: 1px !important;
-        height: 1px !important;
-        padding: 0 !important;
-        margin: -1px !important;
-        overflow: hidden !important;
-        clip: rect(0, 0, 0, 0) !important;
-        white-space: nowrap !important;
-        border: 0 !important;
-      }
-      .page-width {
-        max-width: var(--page-width, 90rem);
-        margin: 0 auto;
-        padding-left: var(--page-margin, 20px);
-        padding-right: var(--page-margin, 20px);
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
-        transition: opacity 0.2s;
-      }
-      .btn--primary {
-        background: rgb(var(--color-button, 18, 18, 18));
-        color: rgb(var(--color-button-label, 255, 255, 255));
-      }
-    </style>
   </head>
 
-  <body>
-    {% sections 'header-group' %}
+  <body class="template-{{ template.name }}">
+    <a class="skip-to-content-link visually-hidden" href="#MainContent">
+      {{ 'general.accessibility.skip_to_content' | t }}
+    </a>
 
-    <main id="MainContent" role="main" tabindex="-1">
+    {%- sections 'header-group' -%}
+
+    <main id="MainContent" class="content-for-layout" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
 
-    {% sections 'footer-group' %}
+    {%- sections 'footer-group' -%}
   </body>
 </html>

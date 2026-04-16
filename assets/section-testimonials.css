@@ -1,4 +1,4 @@
-.section-testimonials { background: var(--tm-bg, #f6f5f2); color: var(--tm-fg, #111); padding: var(--tm-padding-top,64px) clamp(1rem,3vw,2rem) var(--tm-padding-bottom,64px); }
+.tm { background: var(--tm-bg, #f6f5f2); color: var(--tm-fg, #111); padding: var(--tm-padding-top,64px) clamp(1rem,3vw,2rem) var(--tm-padding-bottom,64px); }
 .tm__heading { text-align: center; margin: 0 auto 2rem; font-size: clamp(1.5rem, 3vw, 2.25rem); max-width: 1440px; }
 .tm__grid { max-width: 1440px; margin: 0 auto; display: grid; gap: 1rem; grid-template-columns: 1fr; }
 @media (min-width: 820px) { .tm__grid { grid-template-columns: repeat(var(--cols, 3), 1fr); } }

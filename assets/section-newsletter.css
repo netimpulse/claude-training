@@ -1,4 +1,4 @@
-.section-newsletter { background: var(--nl-bg, #f6f5f2); color: var(--nl-fg, #111); padding: var(--nl-padding-top,72px) clamp(1rem,3vw,2rem) var(--nl-padding-bottom,72px); }
+.nl { background: var(--nl-bg, #f6f5f2); color: var(--nl-fg, #111); padding: var(--nl-padding-top,72px) clamp(1rem,3vw,2rem) var(--nl-padding-bottom,72px); }
 .nl__inner { max-width: 640px; margin: 0 auto; text-align: center; }
 .nl__eyebrow { font-size: .8rem; letter-spacing: .2em; text-transform: uppercase; opacity: .6; margin: 0 0 .75rem; }
 .nl__heading { font-size: clamp(1.5rem, 3vw, 2.25rem); margin: 0 0 .75rem; letter-spacing: -.01em; }
