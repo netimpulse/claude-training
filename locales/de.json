@@ -80,9 +80,23 @@
   "cart": {
     "checkout": "Zur Kasse",
     "title": "Warenkorb",
-    "update": "Aktualisieren",
+    "update": "Warenkorb aktualisieren",
     "remove": "Entfernen",
-    "empty": "Dein Warenkorb ist leer"
+    "empty": "Dein Warenkorb ist leer.",
+    "continue_shopping": "Weiter einkaufen",
+    "quantity": "Menge",
+    "subtotal": "Zwischensumme",
+    "taxes_and_shipping": "Steuern und Versand werden an der Kasse berechnet.",
+    "note": "Bestellnotiz",
+    "note_placeholder": "Besondere Hinweise zu deiner Bestellung...",
+    "decrease": "Menge verringern für {title}",
+    "increase": "Menge erhöhen für {title}",
+    "show_note": "Bestellnotiz anzeigen",
+    "headings": {
+      "product": "Produkt",
+      "quantity": "Menge",
+      "total": "Gesamt"
+    }
   },
   "customers": {
     "login": {

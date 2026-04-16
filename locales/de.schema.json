@@ -580,5 +580,8 @@
     "social_pinterest": "Pinterest",
     "social_twitter": "X (Twitter)",
     "heading_font": "Überschrift-Schrift"
+  },
+  "cart": {
+    "show_note": "Bestellnotiz anzeigen"
   }
 }

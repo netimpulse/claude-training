@@ -580,5 +580,8 @@
     "social_pinterest": "Pinterest",
     "social_twitter": "X (Twitter)",
     "heading_font": "Heading font"
+  },
+  "cart": {
+    "show_note": "Show order note"
   }
 }

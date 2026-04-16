@@ -80,9 +80,23 @@
   "cart": {
     "checkout": "Checkout",
     "title": "Cart",
-    "update": "Update",
+    "update": "Update cart",
     "remove": "Remove",
-    "empty": "Your cart is empty"
+    "empty": "Your cart is empty.",
+    "continue_shopping": "Continue shopping",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "taxes_and_shipping": "Taxes and shipping calculated at checkout.",
+    "note": "Order note",
+    "note_placeholder": "Special instructions for your order...",
+    "decrease": "Decrease quantity for {title}",
+    "increase": "Increase quantity for {title}",
+    "show_note": "Show order note",
+    "headings": {
+      "product": "Product",
+      "quantity": "Quantity",
+      "total": "Total"
+    }
   },
   "customers": {
     "login": {
